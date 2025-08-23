@@ -1,0 +1,221 @@
+<% layout('layout/boilerplate') %>
+
+  <!-- ✅ Sidebar -->
+  <%- include('../includes/sidebar') %>
+
+    <!-- ✅ Styles -->
+    <style>
+      /* Sidebar ke saath space banane ke liye */
+      .content-wrapper {
+        margin-left: 16rem;
+        /* sidebar width */
+        padding: 1rem;
+        transition: margin-left 0.3s ease;
+      }
+
+      /* Small screen par sidebar collapse */
+      @media (max-width: 768px) {
+        .content-wrapper {
+          margin-left: 0;
+          padding: 0.75rem;
+        }
+      }
+
+      /* Responsive heading size */
+      h2 {
+        font-size: 1.75rem;
+      }
+    </style>
+
+    <!-- ✅ Content Wrapper -->
+    <div class="content-wrapper">
+      <div class="container my-5">
+        <h2 class="text-center mb-4" style="background-color: bisque;">Add New Student</h2>
+
+        <form action="/admin/newstudent" method="POST" class="needs-validation" novalidate
+          enctype="multipart/form-data">
+          <div class="row g-3">
+            <!-- Full Name -->
+            <div class="col-md-6">
+              <label for="name" class="form-label">Student Name: <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="name" name="name" required>
+              <div class="invalid-feedback">Please enter the student's full name.</div>
+            </div>
+
+            <!-- Faher name  -->
+            <div class="col-md-6">
+              <label for="fatherName" class="form-label">Father's Name:<span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="fatherName" name="fatherName" required>
+              <div class="invalid-feedback">father's name is required</div>
+            </div>
+
+
+            <!-- Date of Birth -->
+            <div class="col-md-6">
+              <label for="dob" class="form-label">Date of Birth: <span class="text-danger">*</span></label>
+              <input type="date" class="form-control" id="dob" name="dob" required>
+              <div class="invalid-feedback">Please select date of birth.</div>
+            </div>
+
+            <!-- Gender -->
+            <div class="col-md-6">
+              <label for="gender" class="form-label">Gender <span class="text-danger">*</span></label>
+              <select class="form-select" id="gender" name="gender" required>
+                <option value="" selected disabled>Select Gender:</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
+              <div class="invalid-feedback">Please select gender.</div>
+            </div>
+
+            <!-- Student Sr No -->
+            <div class="col-md-6">
+              <label for="srNo" class="form-label">Student SrNo: <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="srNo" name="srNo" required>
+                <span id="srNo-feedback" class="text-danger"></span>
+              <div class="invalid-feedback">Please enter a unique student Sr Number.</div>
+            </div>
+
+            <!-- Admission Date -->
+            <div class="col-md-6">
+              <label for="admissionDate" class="form-label">Admission Date: <span class="text-danger">*</span></label>
+              <input type="date" class="form-control" id="admissionDate" name="admissionDate">
+            </div>
+
+            <!-- Phone -->
+            <div class="col-md-6">
+              <label for="phone" class="form-label">Phone No: <span class="text-danger">*</span></label>
+              <input type="tel" class="form-control" id="phone" name="phone" required>
+               <span id="phone-feedback" class="text-danger"></span>
+              <div class="invalid-feedback">Please enter 10 digit mobile number .</div>
+            </div>
+
+            <!-- Fee amount  -->
+            <div class="col-md-6">
+              <label for="feeAmount" class="form-label">Fee amount (in Rupees): <span class="text-danger">*</span></label>
+              <input type="number" class="form-control" id="feeAmount" name="feeAmount" required>
+              <div class="invalid-feedback">Please enter fee amount.</div>
+            </div>
+
+            <!-- Fee deposited Date  -->
+            <div class="col-md-6">
+              <label for="feeDepositDate" class="form-label">Fee Deposit Date: <span
+                  class="text-danger">*</span></label>
+              <input type="date" class="form-control" id="feeDepositDate" name="feeDepositDate" required>
+              <div class="invalid-feedback">Please enter a valid date.</div>
+            </div>
+
+            <!-- Valit to   -->
+            <div class="col-md-6">
+              <label for="validTo" class="form-label">Valid To: <span class="text-danger">*</span></label>
+              <input type="date" class="form-control" id="validTo" name="validTo" required>
+              <div class="invalid-feedback">Please enter a valid date.</div>
+            </div>
+
+            <!-- Seat Number  -->
+            <div class="col-md-6">
+              <label for="seatNumber" class="form-label">Seat Number:<span class="text-danger">*</span></label>
+              <input type="number" class="form-control" id="seatNumber" name="seatNumber" required>
+               <span id="seat-feedback" class="text-danger"></span>
+              <div class="invalid-feedback">Please enter a alloted seat number .</div>
+            </div>
+
+            <!-- Time Slot -->
+            <div class="col-md-6">
+              <label for="timeSlot" class="form-label">Time Slot: <span class="text-danger">*</span></label>
+              <select class="form-select" id="timeSlot" name="timeSlot">
+                <option value="6 hours">6 hours</option>
+                <option value="12 hours">12 hours</option>
+                <option value="18 hours">18 hours</option>
+                <option value="18 hours">24 hours</option>
+              </select>
+            </div>
+
+           
+
+            <!-- Image  -->
+            <div class="col-md-6">
+              <label for="image" class="form-label">Student Photo:</label>
+              <input type="file" class="form-control" id="image" name="image">
+            </div>
+
+            <div class=" col-md-6">
+              <label for="password" class="form-label">Password: <span class="text-danger">*</span></label>
+              <input type="password" name="password" id="password" class="form-control" required>
+            </div>
+             <!-- Address (Full Width) -->
+            <div class="col-md-12">
+              <label for="address" class="form-label">Address: <span class="text-danger">*</span></label>
+              <textarea class="form-control" id="address" name="address" rows="2"></textarea>
+            </div>
+
+            <!-- Submit Button (Full Width Centered) -->
+            <div class="col-12 text-center mt-3">
+              <button type="submit" class="btn btn-primary">Add Student</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ✅ Bootstrap Form Validation -->
+    <script>
+      (function () {
+        'use strict';
+        const forms = document.querySelectorAll('.needs-validation');
+        Array.from(forms).forEach(function (form) {
+          form.addEventListener('submit', function (event) {
+            if (!form.checkValidity()) {
+              event.preventDefault();
+              event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+          }, false);
+        });
+      })();
+
+
+       // Live duplicate check function
+async function checkDuplicate(field, value, feedbackId) {
+  if (!value) return;
+
+  const params = new URLSearchParams();
+  params.append(field, value);
+
+  const response = await fetch(`/admin/students/check-duplicate?${params.toString()}`);
+  const data = await response.json();
+
+  const feedback = document.getElementById(feedbackId);
+  if (data.exists) {
+    feedback.textContent = `${field} already exists for student ${data.student.name}`;
+  } else {
+    feedback.textContent = '';
+  }
+}
+
+// Event listeners for live checking as admin types
+document.getElementById('phone').addEventListener('input', e => {
+  checkDuplicate('phone', e.target.value, 'phone-feedback');
+});
+
+document.getElementById('srNo').addEventListener('input', e => {
+  checkDuplicate('srNo', e.target.value, 'srNo-feedback');
+});
+
+document.getElementById('seatNumber').addEventListener('input', e => {
+  checkDuplicate('seatNumber', e.target.value, 'seat-feedback');
+});
+
+// Prevent form submit if any duplicate exists
+document.getElementById('addStudentForm').addEventListener('submit', e => {
+  const feedbacks = ['phone-feedback', 'srNo-feedback', 'seat-feedback'];
+  for (const id of feedbacks) {
+    if (document.getElementById(id).textContent !== '') {
+      e.preventDefault();
+      alert('Please fix duplicate fields before submitting');
+      return false;
+    }
+  }
+});
+    </script>

@@ -1,0 +1,559 @@
+<% layout('layout/boilerplate') %>
+
+  <style>
+    /* Carousel Image Styling */
+    #welcomeCarousel img {
+      height: 27rem;
+      /* 350px */
+      object-fit: fit;
+      transition: transform 0.5s ease, filter 0.5s ease;
+      overflow: hidden;
+    }
+
+    /* Hover Zoom Effect */
+    #welcomeCarousel img:hover {
+      filter: brightness(1.1);
+    }
+
+    /* Carousel Controls Styling */
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+      background-color: rgba(0, 0, 0, 0.6);
+      border-radius: 50%;
+      padding: 0.75rem;
+      /* 12px */
+      background-size: 50% 50%;
+    }
+
+    /* Indicators (dots) */
+    .carousel-indicators [data-bs-target] {
+      background-color: #007bff;
+    }
+
+    /* Shadow for Carousel */
+    #welcomeCarousel {
+      border-radius: 1rem;
+      /* 15px */
+      height: 25rem;
+    }
+
+    /* Responsive height */
+    @media (max-width: 61.9375rem) {
+
+      /* 991px */
+      #welcomeCarousel img {
+        height: 15.625rem;
+        /* 250px */
+      }
+    }
+
+    @media (max-width: 576px) {
+
+      /* Small screens */
+      #welcomeCarousel img {
+        height: 25rem;
+        /* Increase height */
+        object-fit: fit;
+        /* Prevent distortion */
+      }
+    }
+
+    /* Image Container */
+    .image-container {
+      overflow: hidden;
+      width: 100%;
+      height: 12.5rem;
+      /* 200px → 12.5rem */
+      border-radius: 0.625rem;
+      /* 10px → 0.625rem */
+    }
+
+    .image-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: fit;
+      transition: transform 0.8s ease-in-out;
+    }
+
+    .image-container:hover img {
+      transform: translateY(-20%);
+    }
+
+    /* Responsive for small screens */
+    @media (max-width: 576px) {
+      .image-container {
+        height: 9.375rem;
+        /* 150px → 9.375rem */
+        border-radius: 0.5rem;
+        /* 8px */
+      }
+
+      .my-gallery {
+        padding: 1.25rem;
+        /* 20px → 1.25rem */
+      }
+
+      .my-gallery h1 {
+        font-size: 1.25rem;
+        /* 20px → 1.25rem */
+      }
+    }
+
+
+
+    /* Card Styling */
+    .card {
+      margin-left: auto;
+      margin-right: auto;
+      border: none !important;
+    }
+
+    /* Button Styling */
+    .btn {
+      transition: all 0.2s ease-in-out;
+      transform: scale(1);
+    }
+
+    /* Hover effect for all buttons */
+    .btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Custom Buttons */
+    .custom-btn-danger {
+      background-color: #dc3545;
+      color: white;
+      border: none;
+      transition: 0.3s;
+    }
+
+    .custom-btn-danger:hover {
+      background-color: #b02a37;
+      transform: scale(1.05);
+    }
+
+    .custom-btn-primary {
+      background-color: #0d6efd;
+      color: white;
+      border: none;
+      transition: 0.3s;
+    }
+
+    .custom-btn-primary:hover {
+      background-color: #0b5ed7;
+      transform: scale(1.05);
+    }
+
+    /* Restore bullets for Bootstrap list-group */
+    .list-group {
+      list-style-type: disc;
+      padding-left: 1.5rem;
+    }
+
+    .list-group-item {
+      display: list-item;
+      list-style-type: disc;
+      transition: all 0.3s ease;
+      border: none;
+      border-bottom: 1px solid #eee;
+    }
+
+    .list-group-item:hover {
+      background-color: rgba(13, 110, 253, 0.08);
+      transform: translateX(5px);
+      border-radius: .5rem;
+    }
+
+    /* Responsive padding for small screens */
+    @media (max-width: 576px) {
+      .list-group-item {
+        font-size: 0.9rem;
+        padding: 0.75rem;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+      }
+    }
+
+    .service-card {
+      transition: all 0.3s ease-in-out;
+      border-radius: 1rem;
+    }
+
+    .service-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .typing {
+  font-size: 40px;
+  font-weight: bold;
+  font-family: monospace;
+  color: #0a7d0a;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 0;
+  animation: reveal 4s linear infinite alternate;
+}
+
+@keyframes reveal {
+  from { width: 0; }
+  to { width: 15ch; }
+}
+  </style>
+
+  <!-- Welcome + Carousel Section -->
+  <section class="container mb-2">
+    <div class="row d-flex justify-content-center align-items-center">
+
+      <!-- Welcome Text -->
+      <div class="col-12 col-lg-6 mb-5 text-center">
+        <h4 class="text-start mt-5 mb-1 text-muted lead fw-semibold">Welcome to </h4>
+        <h1 class="text-primary  text-start typing " style="font-size: 1.8rem; font-weight:700;"> Shayam Library </h1>
+
+        <p class="lead mb-4" style="text-align: justify;">
+          A place where <strong>knowledge meets excellence.</strong>
+          We are committed to providing <span class="text-primary fw-semibold">a vast collection of resources, quiet
+            study spaces,</span>
+          and the guidance you need to explore, learn, and grow.
+        </p>
+        <p class="text-muted text-start "> Step into our library and unlock the doors to endless possibilities!</p>
+
+        <div class="d-flex flex-start gap-3 mt-4">
+          <a href="/student/login" class=" btn btn-outline-danger  px-4 py-2 mx-2 fw-semibold">
+            Student
+          </a>
+          <a href="/admin/dashboard" class="btn btn-outline-primary px-4 py-2 fw-semibold">
+            Admin
+          </a>
+        </div>
+      </div>
+
+      <!-- Carousel -->
+      <div class="col-12 col-lg-6 my-5 my-sm-5 my-md-0 mt-lg-5">
+        <div id="welcomeCarousel" class="carousel slide shadow-lg rounded overflow-hidden" data-bs-ride="carousel"
+          style="border-radius: 1rem !important ;">
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <img src="/images/banner.jpeg" class="d-block w-100" alt="Slide 1">
+            </div>
+            <div class="carousel-item">
+              <img src="/images/ravendra.jpg" class="d-block  w-100" alt="Slide 2">
+            </div>
+            <div class="carousel-item">
+              <img src="/images/lib6.jpeg" class="d-block w-100" alt="Slide 3">
+            </div>
+          </div>
+
+          <button class="carousel-control-prev" type="button" data-bs-target="#welcomeCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#welcomeCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+          </button>
+        </div>
+
+        <p class="text-center mt-4  text-secondary">Director: <strong>Ravendra Gangwar</strong> </p>
+        <p class="text-center  text-secondary">Mob: <strong>+91&nbsp;8650674869</strong> </p>
+      </div>
+    </div>
+  </section>
+  <hr />
+
+  <!-- Services Section -->
+  <section class="main-section py-5 bg-light" id="my-services">
+    <div class="container">
+      <!-- Section Title -->
+      <div class="text-center mb-5">
+        <h1 class="section-title  px-3 py-2" style="background-color: bisque;">
+          Our Facilities
+        </h1>
+      </div>
+
+      <!-- Services Carousel -->
+      <div id="servicesCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner text-center">
+
+          <!-- First Slide -->
+          <div class="carousel-item active">
+            <div class="d-flex justify-content-center gap-4 flex-wrap">
+              <div class="card service-card p-4 shadow-sm border-0">
+                <i class="bi bi-code-slash fs-1 text-primary mb-3"></i>
+                <h5 class="fw-bold">Fully Air-Conditioned</h5>
+                <p class="text-muted">Enjoy 24/7 air-conditioning service for your comfort.</p>
+
+              </div>
+              <div class="card service-card p-4 shadow-sm border-0">
+                <i class="bi bi-palette fs-1 text-success mb-3"></i>
+                <h5 class="fw-bold">High-Speed Wi-Fi</h5>
+                <p class="text-muted">Unlimited internet access for study and research.</p>
+              </div>
+              <div class="card service-card p-4 shadow-sm border-0">
+                <i class="bi bi-bar-chart-line fs-1 text-warning mb-3"></i>
+                <h5 class="fw-bold">CCTV Security</h5>
+                <p class="text-muted">24/7 surveillance for safety and discipline.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Second Slide -->
+          <div class="carousel-item">
+            <div class="d-flex justify-content-center gap-4 flex-wrap">
+              <div class="card service-card p-4 shadow-sm border-0">
+                <i class="bi bi-phone fs-1 text-danger mb-3"></i>
+                <h5 class="fw-bold">Library Access</h5>
+                <p class="text-muted">Access to daily newspaper, journals, and resources.</p>
+              </div>
+              <div class="card service-card p-4 shadow-sm border-0">
+                <i class="bi bi-laptop fs-1 text-info mb-3"></i>
+                <h5 class="fw-bold">Individual Study Lamp</h5>
+                <p class="text-muted">Each seat is equipped with a personal study lamp.</p>
+
+              </div>
+              <div class="card service-card p-4 shadow-sm border-0">
+                <i class="bi bi-megaphone fs-1 text-secondary mb-3"></i>
+                <h5 class="fw-bold">Silent Zone</h5>
+                <p class="text-muted">Strictly noise-free area for focused study.</p>
+              </div>
+            </div>
+          </div>
+
+
+          <!-- Carousel Item 3 -->
+          <div class="carousel-item">
+            <div class="d-flex justify-content-center gap-4 flex-wrap">
+              <div class="card service-card p-4 shadow-sm border-0">
+                <i class="bi bi-phone fs-1 text-danger mb-3"></i>
+                <h5 class="fw-bold">Charging Ports</h5>
+                <p class="text-muted">Individual charging points available at every desk.</p>
+              </div>
+              <div class="card service-card p-4 shadow-sm border-0">
+                <i class="bi bi-laptop fs-1 text-info mb-3"></i>
+                <h5 class="fw-bold">Clean Drinking Water</h5>
+                <p class="text-muted">Purified water available for all students.</p>
+
+
+              </div>
+              <div class="card service-card p-4 shadow-sm border-0">
+                <i class="bi bi-megaphone fs-1 text-secondary mb-3"></i>
+                <h5 class="fw-bold">Locker Facility</h5>
+                <p class="text-muted">Personal lockers to keep books and belongings safe.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Carousel Controls -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#servicesCarousel" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#servicesCarousel" data-bs-slide="next">
+          <span class="carousel-control-next-icon"></span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <hr class="mt-5 " />
+
+  <!-- Simple Rules & Regulations Section -->
+  <section class="py-5">
+    <div class="container">
+      <h1 class="mt-3 text-center" style="background-color: bisque;">
+        Rules & Regulations
+      </h1>
+
+      <div class="bg-white p-4 rounded shadow-sm">
+        <ul class="list-group">
+          <li class="list-group-item d-flex align-items-start">
+            <i class="bi bi-check-circle-fill text-success me-2 mt-1"></i>
+            <span style="text-align: justify;">&bull; Students are requested to maintain silence and refrain from talking in the library while
+              studying.</span>
+          </li>
+          <li class="list-group-item d-flex align-items-start">
+            <i class="bi bi-check-circle-fill text-success me-2 mt-1"></i>
+            <span style="text-align: justify;">&bull; It is mandatory to maintain complete peace in the library.</span>
+          </li>
+          <li class="list-group-item d-flex align-items-start">
+            <i class="bi bi-check-circle-fill text-success me-2 mt-1"></i>
+            <span style="text-align: justify;">&bull; During library timing, students will have to sit only on their allotted seat.</span>
+          </li>
+          <li class="list-group-item d-flex align-items-start">
+            <i class="bi bi-check-circle-fill text-success me-2 mt-1"></i>
+            <span style="text-align: justify;">&bull; Respect faculty members, staff, and fellow students at all times.</span>
+          </li>
+          <li class="list-group-item d-flex align-items-start">
+            <i class="bi bi-check-circle-fill text-success me-2 mt-1"></i>
+            <span style="text-align: justify;">&bull; Mobile phone must be kept on silent mode in the library.</span>
+          </li>
+          <li class="list-group-item d-flex align-items-start">
+            <i class="bi bi-check-circle-fill text-success me-2 mt-1"></i>
+            <span style="text-align: justify;">&bull; Students must maintain complete silence and proper discipline in the library at all
+              times.</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+
+
+  <hr>
+  <section class="my-gallery mt-5 p-5">
+    <h1 class=" mb-3  text-center" style="background-color:bisque;">My Collections</h1>
+    <div class="container text-center my-5">
+      <div class="row justify-content-center g-4 ">
+        <!-- Row 1 -->
+        <div class="col-sm-6 col-md-4 mb-4">
+          <div class="image-container">
+            <img src="/images/inside1.jpg" alt="Image 1" />
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-4 mb-4 d-none d-sm-block">
+          <div class="image-container">
+            <img src="/images/streetbanner.jpg" alt="Image 3" />
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-4 mb-4">
+          <div class="image-container">
+            <img src="/images/lib1.jpg" alt="Image 4" />
+          </div>
+        </div>
+
+        <!-- Row 2 -->
+        <div class="col-sm-6 col-md-4 mb-4 d-none d-sm-block">
+          <div class="image-container">
+            <img src="/images/lib2.jpg" alt="Image 5" />
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-4 mb-4 d-none d-sm-block">
+          <div class="image-container">
+            <img src="/images/lib4.jpg" alt="Image 6" />
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-4 mb-4 d-none d-sm-block">
+          <div class="image-container">
+            <img src="/images/lib5.jpg" alt="Image 7" />
+          </div>
+        </div>
+
+        <!-- Row 3 -->
+        <div class="col-sm-6 col-md-4 mb-4">
+          <div class="image-container">
+            <img src="/images/lib6.jpeg" alt="Image 9" />
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-4 mb-4">
+          <div class="image-container">
+            <img src="/images/lib7.jpeg" alt="Image 10" />
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-4 mb-4 d-none d-sm-block">
+          <div class="image-container">
+            <img src="/images/lib3.JPG" alt="Image 11" />
+          </div>
+        </div>
+        <!-- <div class="col-6 col-md-4">
+            <div class="image-container">
+              <img src="/images/Adimain.jpeg" alt="Image 12" />
+            </div>
+          </div> -->
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <hr />
+
+
+  <!-- Contact Us Section -->
+  <section id="contact" class="py-5">
+    <div class="container">
+      <div class="row">
+        <!-- Address Section -->
+        <div class="col-lg-6 mb-5">
+          <h2 class="text-center mb-5" style="background-color: bisque;">Contact Us</h2>
+          <p class="text-muted">Feel free to reach out to us via the details below:</p>
+          <ul class="list-unstyled">
+            <li class="mt-2 mb-2" ><strong><i class="fa-solid fa-location-dot"></i> Address:</strong> Patel Nagar near
+              Sahu Ji School, Bisalpur.</li>
+            <li class="mt-2 mb-2"><strong><i class="fa-solid fa-phone"></i> Phone:</strong> +91 8650674869</li>
+            <li class="mt-2 mb-2"><strong><i class="fa-solid fa-comment-dots"></i> Email:</strong> anshinternet@gmail.com
+            </li>
+          </ul>
+          <div>
+            <h5 class="mt-3  text-muted mb-3">Follow Us</h5>
+             <a href="https://wa.me/918650674869?text=Hello%20Mr. Ravendra Gangwar, I have just visited your website!" class="me-3" target="_blank" style="text-decoration: none;">
+           <i class="fa-brands fa-whatsapp fa-2x " style="color: rgb(14, 212, 14);"></i>
+        </a>
+            <a href="#" class="me-3 text-decoration-none text-info">
+              <i class="fab fa-twitter fa-2x"></i>
+            </a>
+            <a href="#" class="text-decoration-none text-danger">
+              <i class="fab fa-instagram fa-2x"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Contact Form Section -->
+        <div class="col-lg-6">
+          <h2 class="text-center mb-4" style="background-color: bisque;">Your Query</h2>
+          <form class="needs-validation" action="/admin/query" method="post" novalidate>
+            <div class="mb-3">
+              <label for="name" class="form-label">Name: <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name" required />
+              <div class="invalid-feedback">Please enter your name.</div>
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">Email: <span class="text-danger">*</span></label>
+              <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email"
+                required />
+              <div class="invalid-feedback">Please enter a valid email.</div>
+            </div>
+
+            <!-- New Phone Number Field -->
+            <div class="mb-3">
+              <label for="number" class="form-label">Phone: <span class="text-danger">*</span></label>
+              <input type="tel" class="form-control" id="number" name="number" placeholder="Enter your phone number"
+                pattern="[0-9]{10}" required />
+              <div class="invalid-feedback">
+                Please enter a valid 10-digit phone number.
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="message" class="form-label">Message: <span class="text-danger">*</span></label>
+              <textarea class="form-control" id="message" name="message" rows="5" placeholder="Write your message"
+                required></textarea>
+              <div class="invalid-feedback">Please enter your message.</div>
+            </div>
+            <button type="submit" class="btn btn-outline-success px-3">Send</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bootstrap Validation Script -->
+  <script>
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (function () {
+      "use strict";
+      const forms = document.querySelectorAll(".needs-validation");
+      Array.from(forms).forEach(function (form) {
+        form.addEventListener(
+          "submit",
+          function (event) {
+            if (!form.checkValidity()) {
+              event.preventDefault();
+              event.stopPropagation();
+            }
+            form.classList.add("was-validated");
+          },
+          false
+        );
+      });
+    })();
+  </script>

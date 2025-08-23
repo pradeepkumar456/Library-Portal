@@ -1,0 +1,100 @@
+<% layout('layout/boilerplate') %>
+<%- include('../includes/sidebar') %>
+<style>
+ :root {
+      --sidebar-width: 16rem; /* sidebar width */
+    }
+    .content {
+      margin-left: var(--sidebar-width);
+      padding: 2rem;
+    }
+    .update-card {
+      border-left: 0.4rem solid #0d6efd;
+      transition: transform 0.2s ease-in-out;
+      padding: 1rem;
+    }
+    .update-card:hover {
+      transform: translateY(-0.2rem);
+      box-shadow: 0 0.4rem 1.2rem rgba(0,0,0,0.1);
+    }
+    h2 {
+      font-size: 1.6rem;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+    h5 {
+      font-size: 1.2rem;
+    }
+    p {
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    .badge {
+      font-size: 0.9rem;
+      padding: 0.4rem 0.6rem;
+    }
+    @media (max-width: 768px) {
+      .content {
+        margin-left: 0; /* sidebar collapse case */
+        padding: 1rem;
+      }
+    }
+  </style>
+ <body>
+  <!-- Content area (beside sidebar) -->
+  <div class="content">
+    <h2 class="text-center mt-2 " style="background-color: bisque;"> Project Updates</h2>
+
+    <div class="row g-4">
+      <!-- Update Item -->
+      <div class="col-md-6">
+        <div class="card update-card">
+          <h5 class="fw-bold">🔧 Admin Panel Security</h5>
+          <p>Implementing Passport.js authentication with bcrypt.</p>
+          <span class="badge bg-warning text-dark">In Progress</span>
+          <small class="text-muted d-block mt-2">Updated: Aug 23, 2025</small>
+        </div>
+      </div>
+
+      <!-- Update Item -->
+      <div class="col-md-6">
+        <div class="card update-card">
+          <h5 class="fw-bold">📊 Admin Reset Password Using OTP</h5>
+          <p>Upcoming feature to reset password using OTP.</p>
+          <span class="badge bg-secondary">Upcoming</span>
+          <small class="text-muted d-block mt-2">Planned: Sep 2025</small>
+        </div>
+      </div>
+
+      <!-- Update Item -->
+      <div class="col-md-6">
+        <div class="card update-card">
+          <h5 class="fw-bold">📊 Reset Password For Students Using OTP</h5>
+          <p>Upcoming feature to reset password using OTP.</p>
+          <span class="badge bg-secondary">Upcoming</span>
+          <small class="text-muted d-block mt-2">Planned: Sep 2025</small>
+        </div>
+      </div>
+
+      <!-- Update Item -->
+      <div class="col-md-6">
+        <div class="card update-card">
+          <h5 class="fw-bold">Automatic Mail Send Functionlity</h5>
+          <p>In upcoming feature when admin add new student , that student will a mail with all registered details.</p>
+          <span class="badge bg-secondary">Upcoming</span>
+          <small class="text-muted d-block mt-2">Planned: Sep 2025</small>
+        </div>
+      </div>
+
+      <!-- Update Item -->
+      <div class="col-md-6">
+        <div class="card update-card">
+          <h5 class="fw-bold">✅ Password Reset Feature</h5>
+          <p>Admins can now reset password using secure token verification.</p>
+          <span class="badge bg-success">Completed</span>
+          <small class="text-muted d-block mt-2">Completed: Aug 20, 2025</small>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>

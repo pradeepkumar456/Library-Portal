@@ -1,0 +1,102 @@
+<style>
+    :root {
+      --sidebar-width: 16rem;
+    }
+
+    body {
+      font-size: 1rem;
+    }
+
+    .sidebar {
+      width: var(--sidebar-width);
+      min-height: 100vh;
+      background-color: #343a40;
+      position: fixed;
+      top: 8;
+      left: 0;
+      color: #fff;
+      padding-top: 1.5rem;
+    }
+
+    .sidebar a {
+      color: #adb5bd;
+      text-decoration: none;
+      padding: 0.75rem 1rem;
+      display: block;
+      font-size: 1rem;
+    }
+
+    .sidebar a:hover, .sidebar a.active {
+      background-color: #495057;
+      color: #fff;
+    }
+
+    .sidebar .logout-btn {
+      color: #fff;
+      background-color: #dc3545;
+      margin: 1rem;
+      display: block;
+      text-align: center;
+      padding: 0.5rem;
+      border-radius: 0.375rem;
+    }
+
+    .main-content {
+      margin-left: var(--sidebar-width);
+      padding: 2rem;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        position: relative;
+        width: 100%;
+        min-height: auto;
+        padding: 1rem;
+      }
+
+      .main-content {
+        margin-left: 0;
+      }
+    }
+
+    footer{
+      display: none;
+    }
+  </style>
+
+<body>
+
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <div class="text-center mb-4">
+      <hr/>
+      <h4>Admin Panel</h4>
+    </div>
+    <a href="/admin/dashboard" class="slideBtn1" ><i class="fa-solid fa-house-chimney-user"></i> Dashboard</a>
+    <a href="/admin/students" class="slideBtn2"><i class="fa-solid fa-building-columns"></i> Students</a>
+    <a href="/admin/query" class="slideBtn3"><i class="fa-solid fa-comment-dots"></i> Query</a>
+    <a href="/admin/newstudent" class="slideBtn4"> <i class="fa-solid fa-user-plus"></i> Add  Student</a>
+    <a href="#"><i class="fa-solid fa-gear"></i> Settings</a>
+     <a href="/admin/update-info"><i class="fa-solid fa-gear"></i> Update Info</a>
+    <a href="/admin/logout" class="logout-btn" class="slideBtn5">🚪 Logout</a>
+  </nav>
+  </div>
+  <script>
+    const path = window.location.pathname;
+
+const btnMap = {
+  "/pradeepkumar/admin/dashboard": dashbtn,
+  "/pradeepkumar/admin/message": msgbtn,
+  "/pradeepkumar/admin/blog": dashbtn,
+  "/pradeepkumar/blog/new": dashbtn,
+};
+
+for (const [route, btn] of Object.entries(btnMap)) {
+  if (path === route) {
+    btn.classList.add("active");
+  } else {
+    btn.classList.remove("active");
+  }
+}
+
+  </script> 

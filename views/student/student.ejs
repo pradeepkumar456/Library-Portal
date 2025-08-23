@@ -1,0 +1,241 @@
+<% layout('layout/boilerplate') %>
+  <%- include('../includes/sidebar') %>
+
+    <style>
+      /* Sidebar ke liye space */
+      .content-wrapper {
+        flex: 1;
+        margin-left: 250px;
+        padding: 20px;
+        transition: margin-left 0.3s ease;
+      }
+
+      .sidebar.collapsed~.content-wrapper {
+        margin-left: 80px;
+      }
+
+      /* ===== Card Styling ===== */
+      .student-card {
+        border: none;
+        border-radius: 1rem;
+        overflow: hidden;
+        background: linear-gradient(135deg, #f9f9ff, #eef3ff);
+        transition: all 0.3s ease-in-out;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .student-card:hover {
+        transform: translateY(-0.5rem) scale(1.02);
+        box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.15);
+        background: linear-gradient(135deg, #f1f5ff, #e3eeff);
+      }
+
+      .student-card .card-title {
+        color: #2d2f76;
+        font-weight: 700;
+      }
+
+      .student-card .card-text strong {
+        color: #444;
+      }
+
+      .student-img {
+        width: 7rem;
+        height: 7rem;
+        object-fit: cover;
+        border-radius: 50%;
+        margin-top: 0.5rem;
+      }
+
+      .avatar {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: #fff;
+        margin: 1rem auto 0 auto;
+        background: linear-gradient(135deg, #6a11cb, #2575fc);
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+        transition: transform 0.4s ease, box-shadow 0.4s ease;
+      }
+
+      .avatar:hover {
+        transform: scale(1.1) rotate(5deg);
+        box-shadow: 0 0.8rem 1.5rem rgba(0, 0, 0, 0.3);
+      }
+
+      .card-footer a,
+      .card-footer button {
+        border-radius: 20px;
+        padding: 0.3rem 0.9rem;
+        font-size: 0.85rem;
+        transition: all 0.3s ease;
+      }
+
+      .card-footer a:hover,
+      .card-footer button:hover {
+        transform: translateY(-2px);
+      }
+
+      @media (max-width: 768px) {
+        .content-wrapper {
+          margin-left: 0;
+        }
+
+        .avatar {
+          width: 90px;
+          height: 90px;
+          font-size: 2rem;
+        }
+      }
+    </style>
+
+    <body>
+      <!-- Search Form -->
+      <!-- <div class="d-flex justify-content-center mb-4 mt-4">
+    <form action="/admin/students" method="GET" class="d-flex" style="gap: 0.5rem;">
+      <input type="text" name="search" class="form-control w-100"
+        placeholder="Search by name, phone, SR No, or seat number"
+        value="<%= typeof searchQuery !== 'undefined' ? searchQuery : '' %>" />
+      <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+  </div> -->
+
+
+
+
+
+      <!-- Main Content -->
+      <main class="content-wrapper">
+        <div class="container-fluid mb-4 mt-4">
+          <div class="row g-2 align-items-center">
+            <!-- Search Form -->
+            <div class="col-12 col-lg-6">
+              <form action="/admin/students" method="GET" class="d-flex">
+                <input type="text" name="search" class="form-control me-2 shadow-sm rounded-pill border-primary px-3"
+                  placeholder="Search by name, phone, SR No, or seat number"
+                  value="<%= typeof searchQuery !== 'undefined' ? searchQuery : '' %>">
+                <button type="submit"
+                  class="btn btn-outline-primary d-flex align-items-center shadow-sm rounded-pill border-primary">
+                  <i class="fa fa-search me-1"></i> Search
+                </button>
+              </form>
+            </div>
+
+            <!-- Add New Student Button -->
+            <div class="col-8 col-lg-2 text-lg-end ms-4 mt-3">
+              <a href="/admin/newstudent"
+                class="btn btn-outline-primary btn-sm px-4 py-2 rounded-pill border-primary w-100 w-lg-auto">
+                Add Student &nbsp;<i class="fa-solid fa-user-plus"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="container-fluid">
+          <h1 class="text-center mb-4" style="background-color:bisque">All Students</h1>
+
+          <!-- <div class="d-flex justify-content-center my-3">
+            <a href="/admin/newstudent" class="btn btn-outline-primary btn-sm px-4 py-2">
+              Add New Student &nbsp;<i class="fa-solid fa-user-plus"></i>
+            </a>
+          </div> -->
+
+          <!-- No match message -->
+          <% if (allStudent.length===0) { %>
+            <div class="alert alert-warning text-center" role="alert">
+              <% if (searchQuery && searchQuery.trim() !=="" ) { %>
+                No students found matching "<%= searchQuery %>"
+                  <% } else { %>
+                    No students available.
+                    <% } %>
+            </div>
+            <% } %>
+
+              <!-- Student Cards -->
+              <% if (allStudent.length> 0) { %>
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                  <% allStudent.forEach(student=> { %>
+                    <div class="col">
+                      <div class="card student-card h-100 shadow-sm">
+                        <% if(student.image && student.image.url) { %>
+                          <img src="<%= student.image.url %>" class="card-img-top student-img rounded-circle mt-2"
+                            alt="<%= student.name %>" />
+                          <% } else { %>
+                            <div class="avatar">
+                              <%= student.name ? student.name.charAt(0).toUpperCase() : "?" %>
+                            </div>
+                            <% } %>
+
+                              <div class="card-body">
+                                <h5 class="card-title fw-bold">
+                                  <%= student.name %>
+                                </h5>
+                                <p class="card-text mb-1"><strong>SR No:</strong>
+                                  <%= student.srNo %>
+                                </p>
+                                <p class="card-text mb-1"><strong>Phone:</strong>
+                                  <%= student.phone || 'N/A' %>
+                                </p>
+                                <p class="card-text mb-0"><strong>Address:</strong>
+                                  <%= student.address %>
+                                </p>
+                              </div>
+
+                              <div class="card-footer text-center">
+                                <a href="/admin/students/<%= student._id %>"
+                                  class="btn btn-sm btn-outline-primary me-2">View</a>
+                                <a href="/admin/students/<%= student._id %>/edit"
+                                  class="btn btn-sm btn-outline-success">Edit</a>
+                                <button class="btn btn-danger"
+                                  onclick="confirmDelete('<%= student._id %>')">Delete</button>
+                              </div>
+                      </div>
+                    </div>
+
+                    <div class="d-lg-none my-4">
+                      <hr />
+                    </div>
+                    <% }) %>
+                </div>
+                <% } %>
+        </div>
+      </main>
+    </body>
+
+    <script>
+      function confirmDelete(studentId) {
+        Swal.fire({
+          title: 'Are you sure?',
+          text: "This student will be permanently deleted!",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#d33',
+          cancelButtonColor: '#3085d6',
+          confirmButtonText: 'Yes, delete it',
+          cancelButtonText: 'Cancel'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = `/admin/students/${studentId}?_method=DELETE`;
+
+            const hiddenInput = document.createElement('input');
+            hiddenInput.type = 'hidden';
+            hiddenInput.name = '_method';
+            hiddenInput.value = 'DELETE';
+            form.appendChild(hiddenInput);
+
+            document.body.appendChild(form);
+            form.submit();
+          }
+        });
+      }
+    </script>

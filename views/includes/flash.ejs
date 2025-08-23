@@ -1,0 +1,35 @@
+<!-- Success Alert -->
+<% if(success && success.length > 0) { %>
+  <div class="flash-message position-fixed start-50 translate-middle-x mt-5" style="top: 70px; z-index: 1055;">
+    <div class="alert alert-success alert-dismissible fade show text-center shadow-lg rounded-3"
+         role="alert"
+         style="min-width: 280px; max-width: 400px;">
+      <%= success[0] %>
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+  </div>
+<% } %>
+
+<!-- Error Alert -->
+<% if(error && error.length > 0) { %>
+  <div class="flash-message position-fixed start-50 translate-middle-x mt-5" style="top: 70px; z-index: 1055;">
+    <div class="alert alert-danger alert-dismissible fade show text-center shadow-lg rounded-3"
+         role="alert"
+         style="min-width: 280px; max-width: 400px;">
+      <%= error[0] %>
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+  </div>
+<% } %>
+
+
+
+<script>
+  setTimeout(() => {
+    const alert = document.querySelector('.flash-message .alert');
+    if (alert) {
+      alert.classList.remove('show'); // Bootstrap fade
+    }
+  }, 4000);
+</script>
+

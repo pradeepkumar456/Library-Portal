@@ -1,0 +1,147 @@
+<% layout('layout/boilerplate') %> <%- include('../includes/sidebar') %>
+
+<style>
+  /* Sidebar ke liye space */
+  .content-wrapper {
+    flex: 1;
+    margin-left: 250px;
+    padding: 20px;
+    transition: margin-left 0.3s ease;
+  }
+
+  .sidebar.collapsed ~ .content-wrapper {
+    margin-left: 80px;
+  }
+
+  /* ===== Card Styling ===== */
+.student-card {
+  border: none;
+  border-radius: 1rem;
+  overflow: hidden;
+  background: linear-gradient(135deg, #f9f9ff, #eef3ff); /* light pastel shade */
+  transition: all 0.3s ease-in-out;
+  position: relative;
+}
+.student-card:hover {
+  transform: translateY(-0.5rem) scale(1.02);
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.15);
+  background: linear-gradient(135deg, #f1f5ff, #e3eeff); /* thoda dark hover color */
+}
+
+/* ===== Card Title Styling ===== */
+.student-card .card-title {
+  color: #2d2f76; /* deep indigo */
+  font-weight: 700;
+}
+.student-card .card-text strong {
+  color: #444;
+}
+
+  /* ===== Avatar (Circular Stylish) ===== */
+  .avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #fff;
+    margin: 1rem auto 0 auto;
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+  }
+  .avatar:hover {
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 0.8rem 1.5rem rgba(0, 0, 0, 0.3);
+  }
+
+  /* ===== Card Footer Buttons ===== */
+  .card-footer a,
+  .card-footer button {
+    border-radius: 20px;
+    padding: 0.3rem 0.9rem;
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
+  }
+  .card-footer a:hover,
+  .card-footer button:hover {
+    transform: translateY(-2px);
+  }
+
+  /* Mobile Responsive */
+  @media (max-width: 768px) {
+    .content-wrapper {
+      margin-left: 0;
+    }
+    .avatar {
+      width: 90px;
+      height: 90px;
+      font-size: 2rem;
+    }
+  }
+</style>
+
+<body>
+  <!-- Main Content -->
+  <main class="content-wrapper">
+    <div class="container-fluid">
+      <h1 class="text-center mb-4" style="background-color:bisque">Query</h1>
+
+      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        <% newQuery.forEach( query => { %>
+        <div class="col">
+           
+          <div class="card student-card h-100 shadow-sm">
+            <% if(query.photo) { %>
+            <img
+              src="<%= query.photo %>"
+              class="card-img-top student-img"
+              alt="<%= query.name %>"
+            />
+            <% } else { %>
+            <div class="avatar">
+              <%= query.name ? query.name.charAt(0).toUpperCase() : "?" %>
+            </div>
+            <% } %>
+
+          
+
+            <div class="card-body">
+              <h5 class="card-title fw-bold"><%= query.name %></h5>
+              <p class="card-text mb-1">
+                <strong>Email:</strong> <%= query.email %>
+              </p>
+              <p class="card-text mb-1">
+                <strong>Phone:</strong> <%= query.number || 'N/A' %>
+              </p>
+              <p class="card-text mb-0">
+                <strong>Message:</strong> <%= query.message %>
+              </p>
+            </div>
+            
+
+            <div class="card-footer d-flex justify-content-center align-items-center text-center">
+              <form
+                action="/admin/query/<%= query._id %>?_method=DELETE"
+                method="POST"
+                style="display: inline"
+              >
+                <button type="submit" class="btn btn-outline-danger">
+                  Delete
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+         <!-- HR line visible only on small screens -->
+            <div class="d-lg-none my-4">
+              <hr />
+            </div>
+        <% }) %>
+      </div>
+    </div>
+  </main>
+</body>

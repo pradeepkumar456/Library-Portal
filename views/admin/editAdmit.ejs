@@ -1,0 +1,129 @@
+<% layout('layout/boilerplate') %>
+  <%- include('../includes/sidebar') %>
+
+    <style>
+      html {
+        font-size: 16px;
+        /* base = 1rem */
+      }
+
+
+
+      /* Sidebar ke liye space */
+      .content-wrapper {
+        flex: 1;
+        margin-left: 15.625rem;
+        /* 250px */
+        padding: 1.25rem;
+        /* 20px */
+        transition: margin-left 0.3s ease;
+      }
+
+      /* Collapse hone par */
+      .sidebar.collapsed~.content-wrapper {
+        margin-left: 5rem;
+        /* 80px */
+      }
+
+      /* Mobile view */
+      @media (max-width: 48rem) {
+
+        /* 768px */
+        .content-wrapper {
+          margin-left: 0;
+          padding: 1rem;
+        }
+      }
+
+      /* Form spacing */
+      .form-label {
+        font-size: 1rem;
+        font-weight: 600;
+      }
+
+      .form-control,
+      .form-select,
+      textarea {
+        font-size: 0.9375rem;
+        /* 15px */
+        padding: 0.625rem;
+        /* 10px */
+      }
+
+      .btn {
+        padding: 0.625rem 1.25rem;
+        /* 10px 20px */
+        font-size: 0.9375rem;
+        border-radius: 0.5rem;
+      }
+    </style>
+
+    <main class="content-wrapper">
+      <div class="container ">
+        <h2 class="text-center text-primary mb-4">Edit Student</h2>
+
+        <form action="/admin/<%= admin._id %>/edit?_method=PUT" method="POST" class="needs-validation" novalidate
+          enctype="multipart/form-data">
+          <div class="row g-3">
+            <!-- Full Name -->
+            <div class="col-md-6 col-12">
+              <label for="name" class="form-label">Admin Name <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="name" name="name" value="<%= admin.name %>" required>
+              <div class="invalid-feedback">Please enter the admin's full name.</div>
+            </div>
+
+            <!-- Email -->
+            <div class="col-md-6 col-12">
+              <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
+              <input type="email" class="form-control" id="email" name="email" value="<%= admin.email %>" required>
+              <div class="invalid-feedback">Please enter a valid email address.</div>
+            </div>
+
+            <!-- Full Name -->
+            <!-- <div class="col-md-6 col-12">
+              <label for="role" class="form-label">Role <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="role" name="role" value="" required>
+              <div class="invalid-feedback">Please enter the admin's role.</div>
+            </div> -->
+
+            <!-- Image  -->
+            <div class="col-md-6 col-12">
+              <label for="image" class="form-label">Admin Profile Photo <span class="text-danger">*</span></label>
+              <input type="file" class="form-control" id="image" name="image">
+            </div>
+
+
+            <!-- Address (Full Width) -->
+            <div class="col-md-6 col-12">
+              <label for="location" class="form-label">Address</label>
+              <textarea class="form-control" id="location" name="location" rows="2"><%= admin.location %></textarea>
+            </div>
+
+
+
+            <!-- Submit (Full Width Centered) -->
+            <div class="col-12 text-center mt-3">
+              <button type="submit" class="btn btn-success">Update Admin </button>
+              <a href="/admin/dashboard" class="btn btn-secondary ms-2">Cancel</a>
+            </div>
+          </div>
+        </form>
+      </div>
+    </main>
+
+    <!-- Bootstrap Validation Script -->
+    <script>
+      (function () {
+        'use strict';
+        const forms = document.querySelectorAll('.needs-validation');
+        Array.from(forms).forEach(function (form) {
+          form.addEventListener('submit', function (event) {
+            if (!form.checkValidity()) {
+              event.preventDefault();
+              event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+          }, false);
+        });
+      })();
+    </script>

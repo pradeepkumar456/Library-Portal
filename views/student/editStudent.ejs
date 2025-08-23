@@ -1,0 +1,249 @@
+<% layout('layout/boilerplate') %>
+  <%- include('../includes/sidebar') %>
+
+    <style>
+      html {
+        font-size: 16px;
+        /* base = 1rem */
+      }
+
+
+
+      /* Sidebar ke liye space */
+      .content-wrapper {
+        flex: 1;
+        margin-left: 15.625rem;
+        /* 250px */
+        padding: 1.25rem;
+        /* 20px */
+        transition: margin-left 0.3s ease;
+      }
+
+      /* Collapse hone par */
+      .sidebar.collapsed~.content-wrapper {
+        margin-left: 5rem;
+        /* 80px */
+      }
+
+      /* Mobile view */
+      @media (max-width: 48rem) {
+
+        /* 768px */
+        .content-wrapper {
+          margin-left: 0;
+          padding: 1rem;
+        }
+      }
+
+      /* Form spacing */
+      .form-label {
+        font-size: 1rem;
+        font-weight: 600;
+      }
+
+      .form-control,
+      .form-select,
+      textarea {
+        font-size: 0.9375rem;
+        /* 15px */
+        padding: 0.625rem;
+        /* 10px */
+      }
+
+      .btn {
+        padding: 0.625rem 1.25rem;
+        /* 10px 20px */
+        font-size: 0.9375rem;
+        border-radius: 0.5rem;
+      }
+    </style>
+
+    <main class="content-wrapper">
+      <div class="container ">
+        <h2 class="text-center mb-4" style="background-color: bisque;">Edit Student</h2>
+
+        <form action="/admin/students/<%= student._id %>?_method=PUT" method="POST" class="needs-validation" novalidate
+          enctype="multipart/form-data">
+          <div class="row g-3">
+
+            <!-- Full Name -->
+            <div class="col-md-6 col-12">
+              <label for="name" class="form-label">Full Name <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="name" name="name" value="<%= student.name %>" required>
+              <div class="invalid-feedback">Please enter the student's full name.</div>
+            </div>
+
+            <!-- Email -->
+            <div class="col-md-6 col-12">
+              <label for="fatherName" class="form-label">Father <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="fatherName" name="fatherName"
+                value="<%= student.fatherName %>" required>
+              <div class="invalid-feedback">Please enter a valid email address.</div>
+            </div>
+
+            <!-- Date of Birth -->
+            <div class="col-md-6 col-12">
+              <label for="dob" class="form-label">Date of Birth <span class="text-danger">*</span></label>
+              <input type="date" class="form-control" id="dob" name="dob"
+                value="<%= student.dob.toISOString().split('T')[0] %>" required>
+              <div class="invalid-feedback">Please select date of birth.</div>
+            </div>
+
+            <!-- Gender -->
+            <div class="col-md-6 col-12">
+              <label for="gender" class="form-label">Gender <span class="text-danger">*</span></label>
+              <select class="form-select" id="gender" name="gender" required>
+                <option value="Male" <%=student.gender==='Male' ? 'selected' : '' %>>Male</option>
+                <option value="Female" <%=student.gender==='Female' ? 'selected' : '' %>>Female</option>
+                <option value="Other" <%=student.gender==='Other' ? 'selected' : '' %>>Other</option>
+              </select>
+              <div class="invalid-feedback">Please select gender.</div>
+            </div>
+
+            <!-- Student SR No -->
+            <div class="col-md-6 col-12">
+              <label for="srNo" class="form-label">SR No: <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="srNo" name="srNo" value="<%= student.srNo %>" required>
+              <span id="srNo-feedback" class="text-danger"></span>
+              <div class="invalid-feedback">Please enter a unique student ID.</div>
+            </div>
+
+            <!-- Admission Date -->
+            <div class="col-md-6 col-12">
+              <label for="admissionDate" class="form-label">Admission Date: <span class="text-danger">*</span></label>
+              <input type="date" class="form-control" id="admissionDate" name="admissionDate"
+                value="<%= student.admissionDate ? student.admissionDate.toISOString().split('T')[0] : '' %>" required>
+            </div>
+
+
+            <!-- Phone -->
+            <div class="col-md-6 col-12">
+              <label for="phone" class="form-label">Phone: <span class="text-danger">*</span></label>
+              <input type="tel" class="form-control" id="phone" name="phone" value="<%= student.phone %>" required>
+              <span id="phone-feedback" class="text-danger"></span>
+            </div>
+
+            <!-- Fee -->
+            <div class="col-md-6 col-12">
+              <label for="feeAmount" class="form-label">Fee Amount (in Rupees): <span class="text-danger">*</span></label>
+              <input type="number" class="form-control" id="feeAmount" name="feeAmount"
+                value="<%= student.feeAmount %>" required>
+            </div>
+
+            <!-- Fee Deposit Date  -->
+            <div class="col-md-6 col-12">
+              <label for="feeDepositDate" class="form-label">Fee Deposit Date: <span class="text-danger">*</span></label>
+              <input type="date" class="form-control" id="feeDepositDate" name="feeDepositDate"
+                value="<%= student.feeDepositDate ? student.feeDepositDate.toISOString().split('T')[0] : '' %>"
+                required>
+            </div>
+
+            <!--Valid Student  Date  -->
+            <div class="col-md-6 col-12">
+              <label for="validTo" class="form-label">Validity Upto: <span class="text-danger">*</span></label>
+              <input type="date" class="form-control" id="validTo" name="validTo"
+                value="<%= student.validTo ? student.validTo.toISOString().split('T')[0] : '' %>" required>
+            </div>
+
+
+
+            <!-- Time Slot -->
+            <div class="col-md-6 col-12">
+              <label for="timeSlot" class="form-label">Time Slot: <span class="text-danger">*</span></label>
+              <select class="form-select" id="timeSlot" name="timeSlot" required>
+                <option value="6 hours" <%=student.timeSlot==='6 hours' ? 'selected' : '' %>>6 hours</option>
+                <option value="12 hours" <%=student.timeSlot==='12 hours' ? 'selected' : '' %>>12 hours</option>
+                <option value="18 hours" <%=student.timeSlot==='18 hours' ? 'selected' : '' %>>18 hours</option>
+                <option value="18 hours" <%=student.timeSlot==='18 hours' ? 'selected' : '' %>>24 hours</option>
+              </select>
+            </div>
+
+            <!-- Seat Number  -->
+            <div class="col-md-6 col-12">
+              <label for="seatNumber" class="form-label">Seat Number: <span class="text-danger">*</span></label>
+              <input type="number" class="form-control" id="seatNumber" name="seatNumber"
+                value="<%= student.seatNumber%>" required>
+                 <span id="seat-feedback" class="text-danger"></span>
+            </div>
+
+            <!-- Address (Full Width) -->
+            <div class="col-md-6 col-12">
+              <label for="address" class="form-label">Address: <span class="text-danger">*</span></label>
+              <textarea class="form-control" id="address" name="address" rows="2" required><%= student.address %></textarea>
+            </div>
+
+            <!-- Image  -->
+            <div class="col-md-6">
+              <label for="image" class="form-label">Student Photo <span class="text-danger">*</span></label>
+              <input type="file" class="form-control" id="image" name="image">
+            </div>
+
+            <!-- Submit (Full Width Centered) -->
+            <div class="col-12 text-center mt-3">
+              <button type="submit" class="btn btn-success">Update Student</button>
+              <a href="/admin/students" class="btn btn-secondary ms-2">Cancel</a>
+            </div>
+          </div>
+        </form>
+      </div>
+    </main>
+
+    <!-- Bootstrap Validation Script -->
+    <script>
+      (function () {
+        'use strict';
+        const forms = document.querySelectorAll('.needs-validation');
+        Array.from(forms).forEach(function (form) {
+          form.addEventListener('submit', function (event) {
+            if (!form.checkValidity()) {
+              event.preventDefault();
+              event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+          }, false);
+        });
+      })();
+
+      // Live duplicate check function
+async function checkDuplicate(field, value, feedbackId) {
+  if (!value) return;
+
+  const params = new URLSearchParams();
+  params.append(field, value);
+
+  const response = await fetch(`/admin/students/check-duplicate?${params.toString()}`);
+  const data = await response.json();
+
+  const feedback = document.getElementById(feedbackId);
+  if (data.exists) {
+    feedback.textContent = `${field} already exists for student ${data.student.name}`;
+  } else {
+    feedback.textContent = '';
+  }
+}
+
+// Event listeners for live checking as admin types
+document.getElementById('phone').addEventListener('input', e => {
+  checkDuplicate('phone', e.target.value, 'phone-feedback');
+});
+
+document.getElementById('srNo').addEventListener('input', e => {
+  checkDuplicate('srNo', e.target.value, 'srNo-feedback');
+});
+
+document.getElementById('seatNumber').addEventListener('input', e => {
+  checkDuplicate('seatNumber', e.target.value, 'seat-feedback');
+});
+
+// Prevent form submit if any duplicate exists
+document.getElementById('addStudentForm').addEventListener('submit', e => {
+  const feedbacks = ['phone-feedback', 'srNo-feedback', 'seat-feedback'];
+  for (const id of feedbacks) {
+    if (document.getElementById(id).textContent !== '') {
+      e.preventDefault();
+      alert('Please fix duplicate fields before submitting');
+      return false;
+    }
+  }
+});
+    </script>

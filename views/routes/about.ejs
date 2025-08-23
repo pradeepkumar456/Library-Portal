@@ -1,0 +1,70 @@
+<% layout('layout/boilerplate') %>
+
+  <style>
+    .about-img {
+      height: 22rem;
+      width: 26rem;
+      border-radius: 1rem !important;
+      transition: transform 0.4s ease, box-shadow 0.3s ease;
+    }
+
+    .about-img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 1.25rem 2.5rem rgba(0, 0, 0, 0.15);
+      /* 20px 40px */
+    }
+
+    @media (max-width: 768px) {
+      .about-img {
+        margin-bottom: 1.5rem;
+      }
+    }
+  </style>
+
+  <body>
+    <div class="container my-5">
+      <!-- Heading -->
+      <div class="text-center mb-5">
+        <h1 class="text-center" style="background-color: bisque;">About Us</h1>
+      </div>
+
+      <!-- Content Row -->
+      <div class="row align-items-center g-5">
+        <!-- Image -->
+        <div class="col-md-6">
+          <img src="/images/banner.jpeg" alt="About Us" class="img-fluid about-img shadow-lg rounded-3">
+        </div>
+
+        <!-- Text -->
+        <div class="col-md-6">
+          <h2 class="fw-semibold mb-3 text-center" style="background-color: bisque;">Our Mission</h2>
+          <p class="text-muted" style="text-align: justify;">
+            We are dedicated to delivering <strong>education</strong>  and services to help students excel in their
+            academic and <strong>professional careers</strong> . Our team works passionately to create innovative solutions
+            that make <strong>learning engaging</strong>  and accessible.
+          </p>
+          <p class="text-muted">
+            From personalized learning plans to career guidance, our mission is to empower individuals with
+            the knowledge and skills they need to thrive in the real world.
+          </p>
+
+          <h2 class="fw-semibold mb-3 mt-4 text-center" style="background-color: bisque;">Our Vision</h2>
+          <p class="text-muted " style="text-align: justify;">
+            We envision a world where education is available to everyone, regardless of background or
+            location. By combining modern technology with expert mentorship, we aim to build a community of
+            lifelong learners who inspire and uplift each other.
+          </p>
+
+          <h2 class="fw-semibold mb-3 mt-4 text-center" style="background-color: bisque;">What We Offer</h2>
+          <p class="text-muted" style="text-align: justify;">
+            • Access to a wide collection of <strong>academic resources, books, and research material.</strong>  <br>
+            • <strong>Career-oriented</strong>  training programs and workshops. <br>
+            • <strong>24/7 </strong> support for students to resolve doubts and provide guidance. <br>
+            • <strong>Innovative learning </strong> methods designed to enhance both theoretical and practical knowledge.
+          </p>
+
+          <a href="/contact" class="btn btn-outline-primary btn-sm mt-3">Get in Touch</a>
+        </div>
+      </div>
+    </div>
+  </body>
