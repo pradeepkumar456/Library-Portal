@@ -13,12 +13,13 @@ const sendMail = require("../utils/sendMail.js");
 // routes/student.js
 router.get("/students/check-duplicate", ensureAdmin, async (req, res) => {
   try {
-    const { phone, srNo, seatNumber } = req.query;
+    const { phone, srNo, seatNumber,email } = req.query;
     const query = [];
 
     if (phone) query.push({ phone });
     if (srNo) query.push({ srNo });
     if (seatNumber) query.push({ seatNumber });
+     if (email) query.push({ email });
 
     if (query.length === 0) return res.json({ exists: false });
 
@@ -31,7 +32,8 @@ router.get("/students/check-duplicate", ensureAdmin, async (req, res) => {
           name: existingStudent.name,
           phone: existingStudent.phone,
           srNo: existingStudent.srNo,
-          seatNumber: existingStudent.seatNumber
+          seatNumber: existingStudent.seatNumber,
+          email: existingStudent.email
         }
       });
     }
@@ -42,34 +44,6 @@ router.get("/students/check-duplicate", ensureAdmin, async (req, res) => {
     res.status(500).json({ exists: false });
   }
 });
-
-
-
-// search student
-
-
-// GET /students (list + search)
-// router.get("/students", async (req, res) => {
-//   try {
-//     const { name, srNo } = req.query;
-//     let filter = {};
-
-//     if (name) filter.name = { $regex: name, $options: "i" };
-//     if (srNo) filter.srNo = srNo;
-
-//     const students = await Student.find(filter);
-
-//     res.render("student/student", { 
-//       students, 
-//       search: { name: name || "", srNo: srNo || "" } // 👈 default values
-//     });
-//   } catch (error) {
-//     console.error("Error fetching students:", error);
-//     res.status(500).send("Server Error");
-//   }
-// });
-
-
 
 
 // Get route of all students
@@ -130,10 +104,10 @@ router.post("/newstudent",ensureAdmin,uploads.single("image"), async (req, res) 
 
     // Destructure request body
     const {name,fatherName,dob,gender,srNo,admissionDate,phone,address,feeAmount,
-feeDepositDate,validTo,seatNumber,timeSlot, password   } = req.body;
+feeDepositDate,validTo,seatNumber,timeSlot, password,email  } = req.body;
 
     // Server-side validation
-    const requiredFields = { name, fatherName, dob, gender, srNo, admissionDate, feeAmount, feeDepositDate, validTo, seatNumber, password  };
+    const requiredFields = { name, fatherName, dob, gender, srNo, admissionDate, feeAmount, feeDepositDate, validTo, seatNumber, password,email  };
     for (const [field, value] of Object.entries(requiredFields)) {
       if (!value) {
         req.flash("error", `${field} is required.`);
@@ -162,6 +136,7 @@ feeDepositDate,validTo,seatNumber,timeSlot, password   } = req.body;
       validTo,
       seatNumber,
       image,
+      email,
       timeSlot: timeSlot || "6 hours",
         role: "student"
     });
@@ -192,7 +167,7 @@ feeDepositDate,validTo,seatNumber,timeSlot, password   } = req.body;
     //   await sendMail(adminEmail, "New Student Added", htmlContent);
     // };
 
-
+   
     req.flash("success", `${newStudent.name} added successfully.`);
     res.redirect("/admin/students");
   } catch (err) {
@@ -251,11 +226,11 @@ router.put("/students/:id",ensureAdmin,uploads.single("image"), async (req, res)
     const { id } = req.params;
 
     // Destructure fields from request body according to your schema
-    const {name,fatherName,dob,gender,srNo,admissionDate,phone, address,feeAmount,feeDepositDate,validTo,seatNumber,timeSlot} = req.body;
+    const {name,fatherName,dob,gender,srNo,admissionDate,phone, address,feeAmount,feeDepositDate,validTo,seatNumber,timeSlot,email} = req.body;
 
     // Prepare update data object
     const updateData = {name,fatherName,dob,gender,srNo,admissionDate,phone,
-address,feeAmount,feeDepositDate,validTo,seatNumber,timeSlot};
+address,feeAmount,feeDepositDate,validTo,seatNumber,timeSlot,email};
 
     // If a new image is uploaded, update image field
     if (req.file) {
@@ -270,7 +245,6 @@ address,feeAmount,feeDepositDate,validTo,seatNumber,timeSlot};
     if (!updatedStudent) {
       return res.status(404).send("Student not found");
     }
-
     req.flash("success", `${updatedStudent.name}'s details updated successfully.`);
     res.redirect("/admin/students");
   } catch (err) {

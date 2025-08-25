@@ -57,6 +57,15 @@
               <div class="invalid-feedback">Please select date of birth.</div>
             </div>
 
+            <!-- Email -->
+            <div class="col-md-6 ">
+              <label for="email" class="form-label">Email:<span class="text-danger">*</span></label>
+              <input type="email" class="form-control" id="email" name="email"  required>
+                <span id="email-feedback" class="text-danger"></span>
+              <div class="invalid-feedback">Please enter a valid email address.</div>
+            </div>
+
+
             <!-- Gender -->
             <div class="col-md-6">
               <label for="gender" class="form-label">Gender <span class="text-danger">*</span></label>
@@ -145,7 +154,7 @@
               <input type="password" name="password" id="password" class="form-control" required>
             </div>
              <!-- Address (Full Width) -->
-            <div class="col-md-12">
+            <div class="col-md-6">
               <label for="address" class="form-label">Address: <span class="text-danger">*</span></label>
               <textarea class="form-control" id="address" name="address" rows="2"></textarea>
             </div>
@@ -203,13 +212,17 @@ document.getElementById('srNo').addEventListener('input', e => {
   checkDuplicate('srNo', e.target.value, 'srNo-feedback');
 });
 
+document.getElementById('email').addEventListener('input', e => {
+  checkDuplicate('email', e.target.value, 'email-feedback');
+});
+
 document.getElementById('seatNumber').addEventListener('input', e => {
   checkDuplicate('seatNumber', e.target.value, 'seat-feedback');
 });
 
 // Prevent form submit if any duplicate exists
 document.getElementById('addStudentForm').addEventListener('submit', e => {
-  const feedbacks = ['phone-feedback', 'srNo-feedback', 'seat-feedback'];
+  const feedbacks = ['phone-feedback', 'srNo-feedback', 'seat-feedback','email-feedback'];
   for (const id of feedbacks) {
     if (document.getElementById(id).textContent !== '') {
       e.preventDefault();

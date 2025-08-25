@@ -116,6 +116,15 @@
             </div>
 
 
+               <!-- Email -->
+            <div class="col-md-6 ">
+              <label for="email" class="form-label">Email: <span class="text-danger">*</span></label>
+              <input type="email" class="form-control" id="email" name="email" value="<%=student.email %>" required>
+              <div class="invalid-feedback">Please enter a valid email address.</div>
+            </div>
+
+
+
             <!-- Phone -->
             <div class="col-md-6 col-12">
               <label for="phone" class="form-label">Phone: <span class="text-danger">*</span></label>
@@ -166,17 +175,19 @@
                  <span id="seat-feedback" class="text-danger"></span>
             </div>
 
-            <!-- Address (Full Width) -->
-            <div class="col-md-6 col-12">
-              <label for="address" class="form-label">Address: <span class="text-danger">*</span></label>
-              <textarea class="form-control" id="address" name="address" rows="2" required><%= student.address %></textarea>
-            </div>
-
-            <!-- Image  -->
+             <!-- Image  -->
             <div class="col-md-6">
               <label for="image" class="form-label">Student Photo <span class="text-danger">*</span></label>
               <input type="file" class="form-control" id="image" name="image">
             </div>
+
+            <!-- Address (Full Width) -->
+            <div class=" col-12">
+              <label for="address" class="form-label">Address: <span class="text-danger">*</span></label>
+              <textarea class="form-control" id="address" name="address" rows="2" required><%= student.address %></textarea>
+            </div>
+
+           
 
             <!-- Submit (Full Width Centered) -->
             <div class="col-12 text-center mt-3">

@@ -25,6 +25,7 @@ const studentSchema = new mongoose.Schema(
     validTo: { type: Date, required: true },
 
     seatNumber: { type: Number, required: true, index: true },
+     email : {type : String , required: true, unique:true},
 
     image: {
       url: String,
