@@ -1,4 +1,5 @@
 const express = require('express');
+const mongoose = require("mongoose");
 const router = express.Router();
 const Student = require('../models/student.js'); // your schema
 const Query = require("../models/query.js");
@@ -45,48 +46,75 @@ router.get("/students/check-duplicate", ensureAdmin, async (req, res) => {
 
 
 // search student
-router.get("/students", ensureAdmin, async (req, res) => {
-  try {
-    const { search } = req.query;
-    let query = {};
 
-    // Only filter if search is not empty
-    if (search && search.trim() !== "") {
-      const regex = new RegExp(search.trim(), "i"); // case-insensitive
-      query = {
-        $or: [
-          { name: regex },
-          { phone: regex },
-          { srNo: regex },
-          { seatNumber: regex }
-        ]
-      };
-    }
 
-    // Fetch students, latest first
-    const allStudent = await Student.find(query).sort({ _id: -1 });
+// GET /students (list + search)
+// router.get("/students", async (req, res) => {
+//   try {
+//     const { name, srNo } = req.query;
+//     let filter = {};
 
-    res.render("student/student.ejs", { allStudent, searchQuery: search });
-  } catch (error) {
-    console.error("Error fetching students:", error);
-    req.flash("error", "Unable to fetch students. Please try again.");
-    res.redirect("/admin/dashboard");
-  }
-});
+//     if (name) filter.name = { $regex: name, $options: "i" };
+//     if (srNo) filter.srNo = srNo;
+
+//     const students = await Student.find(filter);
+
+//     res.render("student/student", { 
+//       students, 
+//       search: { name: name || "", srNo: srNo || "" } // 👈 default values
+//     });
+//   } catch (error) {
+//     console.error("Error fetching students:", error);
+//     res.status(500).send("Server Error");
+//   }
+// });
+
+
 
 
 // Get route of all students
+// router.get("/students", ensureAdmin, async (req, res) => {
+//   try {
+//     // Sort by _id descending to get latest added students first
+//     const allStudent = await Student.find({}).sort({ _id: -1 });
+//     res.render("student/student.ejs", { allStudent });
+//   } catch (error) {
+//     console.error("Error fetching students:", error);
+//     req.flash("error", "Unable to fetch students. Please try again.");
+//     res.redirect("/admin/dashboard");
+//   }
+// });
+
+// All Students 
+
 router.get("/students", ensureAdmin, async (req, res) => {
   try {
-    // Sort by _id descending to get latest added students first
-    const allStudent = await Student.find({}).sort({ _id: -1 });
-    res.render("student/student.ejs", { allStudent });
+    const { search } = req.query; // search box ka value
+    let filter = {};
+
+    if (search && search.trim() !== "") {
+      // Check if search is number (SR No) or string (name)
+      if (!isNaN(search)) {
+        filter.srNo = Number(search);
+      } else {
+        filter.name = { $regex: search, $options: "i" }; // case-insensitive
+      }
+    }
+
+    const allStudent = await Student.find(filter).sort({ _id: -1 });
+
+    res.render("student/student", { 
+      allStudent,
+      searchQuery: search || "" // EJS me show karne ke liye
+    });
   } catch (error) {
     console.error("Error fetching students:", error);
     req.flash("error", "Unable to fetch students. Please try again.");
     res.redirect("/admin/dashboard");
   }
 });
+
+
 
 
 
@@ -182,16 +210,18 @@ feeDepositDate,validTo,seatNumber,timeSlot, password   } = req.body;
   }
 });
 
-
-// for individual student 
-router.get("/students/:id",ensureAdmin,async (req, res) => {
+// Individual details 
+router.get("/students/:id", ensureAdmin, async (req, res) => {
   try {
-    const { id } = req.params; // get the id from URL
-    const student = await Student.findById(id); // pass id directly
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).send("Invalid student ID");
+    }
+    const student = await Student.findById(id);
     if (!student) {
       return res.status(404).send("Student not found");
     }
-    res.render("student/individualstudent.ejs", { student});
+    res.render("student/individualstudent.ejs", { student });
   } catch (err) {
     console.error(err);
     res.status(500).send("Server Error");
@@ -203,7 +233,7 @@ router.get("/students/:id/edit",ensureAdmin, async(req,res)=>{
      try {
      
     const { id } = req.params; // get the id from URL
-    const student = await Student.findByIdAndUpdate(id); // pass id directly
+    const student = await Student.findById(id); // pass id directly
     if (!student) {
       return res.status(404).send("Student not found");
     }
@@ -221,10 +251,10 @@ router.put("/students/:id",ensureAdmin,uploads.single("image"), async (req, res)
     const { id } = req.params;
 
     // Destructure fields from request body according to your schema
-    const {name,fatherName,dob,gender,SrNo,admissionDate,phone, address,feeAmount,feeDepositDate,validTo,seatNumber,timeSlot} = req.body;
+    const {name,fatherName,dob,gender,srNo,admissionDate,phone, address,feeAmount,feeDepositDate,validTo,seatNumber,timeSlot} = req.body;
 
     // Prepare update data object
-    const updateData = {name,fatherName,dob,gender,SrNo,admissionDate,phone,
+    const updateData = {name,fatherName,dob,gender,srNo,admissionDate,phone,
 address,feeAmount,feeDepositDate,validTo,seatNumber,timeSlot};
 
     // If a new image is uploaded, update image field

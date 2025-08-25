@@ -131,7 +131,7 @@ app.use("/student",studentLoginRoute);
 
 // 404 Handler
 app.use((req, res) => {
-  res.status(404).render("error/error.ejs", { 
+  res.status(404).render("error.ejs", { 
     statusCode: 404, 
     message: "Page Not Found 😢" 
   });
