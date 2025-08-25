@@ -221,7 +221,7 @@ router.get("/students/:id", ensureAdmin, async (req, res) => {
     if (!student) {
       return res.status(404).send("Student not found");
     }
-    res.render("student/individualstudent.ejs", { student });
+    res.render("student/individualStudent.ejs", { student });
   } catch (err) {
     console.error(err);
     res.status(500).send("Server Error");
