@@ -120,6 +120,7 @@
             <div class="col-md-6 ">
               <label for="email" class="form-label">Email: <span class="text-danger">*</span></label>
               <input type="email" class="form-control" id="email" name="email" value="<%=student.email %>" required>
+              <span id="email-feedback" class="text-danger"></span>
               <div class="invalid-feedback">Please enter a valid email address.</div>
             </div>
 
@@ -133,26 +134,26 @@
             </div>
 
             <!-- Fee -->
-            <div class="col-md-6 col-12">
+            <!-- <div class="col-md-6 col-12">
               <label for="feeAmount" class="form-label">Fee Amount (in Rupees): <span class="text-danger">*</span></label>
               <input type="number" class="form-control" id="feeAmount" name="feeAmount"
                 value="<%= student.feeAmount %>" required>
-            </div>
+            </div> -->
 
             <!-- Fee Deposit Date  -->
-            <div class="col-md-6 col-12">
+            <!-- <div class="col-md-6 col-12">
               <label for="feeDepositDate" class="form-label">Fee Deposit Date: <span class="text-danger">*</span></label>
               <input type="date" class="form-control" id="feeDepositDate" name="feeDepositDate"
                 value="<%= student.feeDepositDate ? student.feeDepositDate.toISOString().split('T')[0] : '' %>"
                 required>
-            </div>
+            </div> -->
 
             <!--Valid Student  Date  -->
-            <div class="col-md-6 col-12">
+            <!-- <div class="col-md-6 col-12">
               <label for="validTo" class="form-label">Validity Upto: <span class="text-danger">*</span></label>
               <input type="date" class="form-control" id="validTo" name="validTo"
                 value="<%= student.validTo ? student.validTo.toISOString().split('T')[0] : '' %>" required>
-            </div>
+            </div> -->
 
 
 
@@ -245,10 +246,15 @@ document.getElementById('srNo').addEventListener('input', e => {
 document.getElementById('seatNumber').addEventListener('input', e => {
   checkDuplicate('seatNumber', e.target.value, 'seat-feedback');
 });
+document.getElementById('email').addEventListener('input', e => {
+  checkDuplicate('email', e.target.value, 'email-feedback');
+});
 
 // Prevent form submit if any duplicate exists
 document.getElementById('addStudentForm').addEventListener('submit', e => {
-  const feedbacks = ['phone-feedback', 'srNo-feedback', 'seat-feedback'];
+  const feedbacks = ['phone-feedback', 'srNo-feedback', 'seat-feedback',
+    'email-feedback'
+  ];
   for (const id of feedbacks) {
     if (document.getElementById(id).textContent !== '') {
       e.preventDefault();

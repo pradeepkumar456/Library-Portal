@@ -4,7 +4,7 @@ const Student = require('../models/student.js');
 const { route } = require('./student.js');
 const {ensureStudent, redirectStudentIfLoggedIn} = require("../middleware.js");
 const passport = require("passport");
-
+const Fee = require("../models/fee.js");
 
 // =================== Student Login Form ===================
 router.get("/login",redirectStudentIfLoggedIn,(req, res) => {
@@ -27,14 +27,41 @@ router.post(
 
 
 // Student Detail 
-router.get("/studentdetail",ensureStudent,async (req,res)=>{
- try{
- const student = await Student.findById(req.user._id);
- res.render("student/studentDetails",{student});
- } catch(err){
-  console.log(err,"Err in code ");
- }
+router.get("/studentdetail", ensureStudent, async (req, res) => {
+  try {
+    // 1️⃣ Get logged-in student
+    const student = await Student.findById(req.user._id);
+
+    if (!student) {
+      req.flash("error", "Student not found.");
+      return res.redirect("/login");
+    }
+
+    // 2️⃣ Get all fee records of that student, latest first
+    const fees = await Fee.find({ student: student._id })
+      .sort({ feeDepositDate: -1 }); // latest month fee सबसे पहले आएगी
+
+    // 3️⃣ Calculate totals (optional)
+    let totalPaid = 0;
+    fees.forEach(f => totalPaid += f.paidAmount);
+
+    // 4️⃣ Latest fee record निकाल लो (अगर चाहिए तो)
+    const latestFee = fees.length > 0 ? fees[0] : null;
+
+    res.render("student/studentDetails", {
+      student,
+      fees,
+      latestFee,
+      totalPaid
+    });
+  } catch (err) {
+    console.error("❌ Error in studentdetail route:", err);
+    req.flash("error", "Server Error: Unable to load student details.");
+    res.redirect("/");
+  }
 });
+
+
 
 
 
@@ -84,7 +111,6 @@ router.post("/change-password",ensureStudent, async (req, res) => {
       req.flash("success", "Password changed successfully! Please login again.");
       res.redirect("/student/login");
     });
-
   } catch (err) {
     console.error("Error changing student password:", err);
     req.flash("error", "Something went wrong! Try again.");

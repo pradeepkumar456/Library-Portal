@@ -70,6 +70,7 @@
                 <h4 class="card-title text-center mb-3">
                   <%= student.name %>
                 </h4>
+                
 
                 <ul class="list-group list-group-flush text-start">
                   <li class="list-group-item"><strong>Father's Name:</strong>
@@ -88,18 +89,18 @@
                     <%= student.admissionDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) %>
 
                   </li>
-                  <li class="list-group-item"><strong>Fee Amount:</strong>
-                    <%= student.feeAmount %>
-                  </li>
+                  <!-- <li class="list-group-item"><strong>Fee Amount:</strong>
+                   
+                  </li> -->
                   <li class="list-group-item"><strong>SR No:</strong>
                     <%= student.srNo %>
                   </li>
-                  <li class="list-group-item"><strong>Fee Deposit Date:</strong>
-                    <%= student.feeDepositDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) %>
-                  </li>
-                  <li class="list-group-item"><strong>Valid Upto:</strong>
-                     <%= student.validTo.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) %>
-                  </li>
+                  <!-- <li class="list-group-item"><strong>Fee Deposit Date:</strong>
+                
+                  </li> -->
+                  <!-- <li class="list-group-item"><strong>Valid Upto:</strong>
+                    
+                  </li> -->
                   <li class="list-group-item"><strong>Seat No:</strong>
                     <%= student.seatNumber %>
                   </li>
@@ -115,9 +116,11 @@
                   </li>
                 </ul>
 
-                <div class="text-center mt-4 mb-3">
+                <div class="text-center mt-4 mb-3 d-flex ">
+                    <a href="/admin/students/<%= student._id %>/fee/add-fee" class="btn btn-success me-2">Add Fee</a>
                   <a href="/admin/students" class="btn btn-secondary me-2">Back to List</a>
-                  <a href="/admin/students/<%= student._id %>/edit" class="btn btn-warning">Edit Student</a>
+                  <a href="/admin/students/<%= student._id %>/edit" class="btn btn-warning me-2">Edit Student</a>
+                   <a href="/admin/students/<%= student._id %>/fee" class="btn btn-danger">Fee History</a>
                 </div>
               </div>
       </div>

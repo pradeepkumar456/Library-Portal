@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require("mongoose");
 const router = express.Router();
+const Fee = require("../models/fee.js");
 const Student = require('../models/student.js'); // your schema
 const Query = require("../models/query.js");
 const multer = require("multer");
@@ -10,7 +11,7 @@ const uploads = multer({ storage });
 const { ensureAdmin,redirectAdminIfLoggedIn} = require("../middleware.js");
 const sendMail = require("../utils/sendMail.js");
 
-// routes/student.js
+// CHECK DUPLICATE ROUTE 
 router.get("/students/check-duplicate", ensureAdmin, async (req, res) => {
   try {
     const { phone, srNo, seatNumber,email } = req.query;
@@ -59,7 +60,7 @@ router.get("/students/check-duplicate", ensureAdmin, async (req, res) => {
 //   }
 // });
 
-// All Students 
+// ALL STUDENTS
 
 router.get("/students", ensureAdmin, async (req, res) => {
   try {
@@ -92,22 +93,24 @@ router.get("/students", ensureAdmin, async (req, res) => {
 
 
 
-// to add new student 
+// ADD NEW STUDENT 
 router.get("/newstudent",ensureAdmin,(req, res) => {
   res.render("student/addStudent.ejs");
 });
 
+
+// POST ROUTE FOR NEW STUDENT
 router.post("/newstudent",ensureAdmin,uploads.single("image"), async (req, res) => {
   try {
     // Handle uploaded image safely
     const image = req.file ? { url: req.file.path, filename: req.file.filename } : null;
 
     // Destructure request body
-    const {name,fatherName,dob,gender,srNo,admissionDate,phone,address,feeAmount,
-feeDepositDate,validTo,seatNumber,timeSlot, password,email  } = req.body;
+    const {name,fatherName,dob,gender,srNo,phone,address,admissionDate,
+ seatNumber,timeSlot, password,email  } = req.body;
 
     // Server-side validation
-    const requiredFields = { name, fatherName, dob, gender, srNo, admissionDate, feeAmount, feeDepositDate, validTo, seatNumber, password,email  };
+    const requiredFields = { name, fatherName, dob, gender, srNo, phone,admissionDate,address,  seatNumber, password,email,timeSlot  };
     for (const [field, value] of Object.entries(requiredFields)) {
       if (!value) {
         req.flash("error", `${field} is required.`);
@@ -131,9 +134,6 @@ feeDepositDate,validTo,seatNumber,timeSlot, password,email  } = req.body;
       admissionDate,
       phone: phone,
       address: address,
-      feeAmount,
-      feeDepositDate,
-      validTo,
       seatNumber,
       image,
       email,
@@ -143,29 +143,56 @@ feeDepositDate,validTo,seatNumber,timeSlot, password,email  } = req.body;
 
      // ✅ Use register() instead of save()
     await Student.register(newStudent, password);
-    // // Save student
-    //   await newStudent.save();
 
-    // // Send student details to admin email
-    // const adminEmail = req.user.email;
-    // if(adminEmail){
-    //   const htmlContent = `
-    //     <p>New Student Added:</p>
-    //     <ul>
-    //       <li>Name: ${newStudent.name}</li>
-    //       <li>Father's Name: ${newStudent.fatherName}</li>
-    //       <li>DOB: ${newStudent.dob}</li>
-    //       <li>Gender: ${newStudent.gender}</li>
-    //       <li>SR No: ${newStudent.srNo}</li>
-    //       <li>Phone: ${newStudent.phone}</li>
-    //       <li>Seat No: ${newStudent.seatNumber}</li>
-    //       <li>Admission Date: ${newStudent.admissionDate}</li>
-    //       <li>Time Slot: ${newStudent.timeSlot}</li>
-    //     </ul>
-    //     <p>Keep this email as backup in case database is lost.</p>
-    //   `;
-    //   await sendMail(adminEmail, "New Student Added", htmlContent);
-    // };
+    const formatDate = (date) => {
+  if (!date) return "";
+  const d = new Date(date);
+  const day = String(d.getDate()).padStart(2, "0");
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const year = d.getFullYear();
+  return `${day}-${month}-${year}`;
+};
+
+
+      // 📩 Send confirmation email
+    // ======================
+    const htmlContent = `
+      <h2>Welcome to Shyam Library 🎓</h2>
+      <p>Dear <b>${newStudent.name}</b>,</p>
+      <p>Your  has been <b>successfully registered</b>.</p>
+      <h3>Admission Details:</h3>
+      <ul>
+        <li><b>Name:</b> ${newStudent.name}</li>
+        <li><b>Father's Name:</b> ${newStudent.fatherName}</li>
+       <li><b>DOB:</b> ${formatDate(newStudent.dob)}</li>
+        <li><b>Gender:</b> ${newStudent.gender}</li>
+        <li><b>SR No:</b> ${newStudent.srNo}</li>
+        <li><b>Phone:</b> ${newStudent.phone}</li>
+        <li><b>Seat No:</b> ${newStudent.seatNumber}</li>
+        <li><b>Admission Date:</b> ${formatDate(newStudent.admissionDate)}</li>
+        <li><b>Time Slot:</b> ${newStudent.timeSlot}</li>
+      </ul>
+      <p>Keep this email as a reference. Wishing you a great journey ahead! 🚀</p>
+    <p>Best Regards,<br/>Shyam Library </p>`;
+
+       const mailSent = await sendMail(
+      newStudent.email,
+      "🎓 Admission Successful - Shyam Library",
+      htmlContent
+    );
+
+      // ✅ Flash message depending on mail status
+    if (mailSent) {
+      req.flash(
+        "success",
+        `${newStudent.name} added successfully  (Confirmation email sent)`
+      );
+    } else {
+      req.flash(
+        "success",
+        `${newStudent.name} added successfully  (But email not sent ⚠️)`
+      );
+    }
 
    
     req.flash("success", `${newStudent.name} added successfully.`);
@@ -185,7 +212,7 @@ feeDepositDate,validTo,seatNumber,timeSlot, password,email  } = req.body;
   }
 });
 
-// Individual details 
+// INDIBIDUAL STODENTS ROUTE 
 router.get("/students/:id", ensureAdmin, async (req, res) => {
   try {
     const { id } = req.params;
@@ -203,7 +230,7 @@ router.get("/students/:id", ensureAdmin, async (req, res) => {
   }
 });
 
-// To edit student details 
+//GET ROUTE FOR EDIT STUDENT 
 router.get("/students/:id/edit",ensureAdmin, async(req,res)=>{
      try {
      
@@ -220,17 +247,17 @@ router.get("/students/:id/edit",ensureAdmin, async(req,res)=>{
 });
 
 
-// Edit Post Route 
+// EDIT POST ROUTE FOR INDIBIDUAL STUDENT  
 router.put("/students/:id",ensureAdmin,uploads.single("image"), async (req, res) => {
   try {
     const { id } = req.params;
 
     // Destructure fields from request body according to your schema
-    const {name,fatherName,dob,gender,srNo,admissionDate,phone, address,feeAmount,feeDepositDate,validTo,seatNumber,timeSlot,email} = req.body;
+    const {name,fatherName,dob,gender,srNo,admissionDate,phone, address,seatNumber,timeSlot,email} = req.body;
 
     // Prepare update data object
     const updateData = {name,fatherName,dob,gender,srNo,admissionDate,phone,
-address,feeAmount,feeDepositDate,validTo,seatNumber,timeSlot,email};
+address,seatNumber,timeSlot,email};
 
     // If a new image is uploaded, update image field
     if (req.file) {
@@ -257,7 +284,7 @@ address,feeAmount,feeDepositDate,validTo,seatNumber,timeSlot,email};
 
 
 
-// Delete student
+// DELETE STUDENT ROUTE 
 router.delete("/students/:id",ensureAdmin, async (req, res) => {
   try {
     const { id } = req.params;
@@ -317,6 +344,187 @@ router.delete("/query/:id",ensureAdmin, async (req, res) => {
     console.error(err);
     req.flash("error", "Failed to delete query!");
     res.redirect("/admin/query");
+  }
+});
+
+
+
+// ---------=><= Fee Routes -------=><=--------- 
+
+
+// Get all fees of a specific student
+router.get("/students/:id/fee",ensureAdmin, async (req, res) => {
+  try {
+    const studentId = req.params.id;
+    const student = await Student.findById(studentId);
+    if (!student) return res.status(404).send("Student not found");
+
+    const fees = await Fee.find({ student: studentId }).sort({ feeDepositDate: -1 });
+
+    res.render("fee/index.ejs", { student, fees });
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
+
+// GET: Show create fee form for a student
+router.get("/students/:id/fee/add-fee",ensureAdmin,  async (req, res) => {
+  try {
+    const student = await Student.findById(req.params.id);
+    if (!student) return res.status(404).send("Student not found");
+
+    res.render("fee/create", { student });
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
+// POST: Add new fee for a student
+router.post("/students/:id/fee", ensureAdmin, async (req, res) => {
+  try {
+    const student = await Student.findById(req.params.id);
+    if (!student) return res.status(404).send("Student not found");
+
+    const { feeAmount, paidAmount, feeDepositDate, validTo, notes,month } = req.body;
+
+    const fee = new Fee({
+      student: student._id,
+      feeAmount,
+      paidAmount,
+      feeDepositDate,
+      validTo,
+      notes,
+      month
+    });
+
+    const newFee = await fee.save();
+
+    
+    // Utility function for formatting dates (DD-MM-YYYY)
+    const formatDate = (date) => {
+      if (!date) return "";
+      const d = new Date(date);
+      const day = String(d.getDate()).padStart(2, "0");
+      const month = String(d.getMonth() + 1).padStart(2, "0");
+      const year = d.getFullYear();
+      return `${day}-${month}-${year}`;
+    };
+
+    // 3️⃣ Prepare Email Content
+    const htmlContent = `
+      <h2>Shyam Library - Fee Confirmation </h2>
+      <p>Dear <b>${student.name}</b>,</p>
+      <p>Your fee payment has been <b>successfully recorded</b>.</p>
+      <h3>Payment Details:</h3>
+      <ul>
+        <li><b>Student Name:</b> ${student.name}</li>
+        <li><b>Father's Name:</b> ${student.fatherName}</li>
+        <li><b>Total Fee:</b> ₹${feeAmount}</li>
+        <li><b>Paid Amount:</b> ₹${paidAmount}</li>
+        <li><b>Deposit Date:</b> ${formatDate(feeDepositDate)}</li>
+        <li><b>Valid Till:</b> ${formatDate(validTo)}</li>
+      </ul>
+      <p>Keep this email as confirmation of your payment.</p>
+      <p>Thank you for choosing Shyam Library! </p>
+      <p>Best Regards,<br/>Shyam Library </p>
+    `;
+
+    // 4️⃣ Send Email
+    const mailSent = await sendMail(
+      student.email,
+      " Fee Payment Confirmation - Shyam Library",
+      htmlContent
+    );
+
+    if (mailSent) {
+      req.flash(
+        "success",
+        `Fee of ₹${paidAmount} recorded for ${student.name}  (Email sent)`
+      );
+    } else {
+      req.flash(
+        "success",
+        `Fee of ₹${paidAmount} recorded for ${student.name}  (Email not sent ⚠️)`
+      );
+    }
+
+    req.flash("success",`Fee details added succcessfully for ${student.name}`);
+    res.redirect(`/admin/students/${student._id}/fee`);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
+
+// ✅ Get edit fee form
+router.get('/students/:studentId/fee/:feeId/edit',ensureAdmin, async (req, res) => {
+  try {
+    const { studentId, feeId } = req.params;
+
+    const student = await Student.findById(studentId);
+    if (!student) return res.status(404).send('Student not found');
+
+    const fee = await Fee.findById(feeId);
+    if (!fee) return res.status(404).send('Fee not found');
+
+    res.render('fee/edit', { student, fee });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Server Error');
+  }
+});
+
+
+// ✅ Update fee details (PUT method)
+router.put('/students/:studentId/fee/:feeId', ensureAdmin,async (req, res) => {
+  try {
+    const { studentId, feeId } = req.params;
+    
+    const { feeAmount, paidAmount, feeDepositDate, validTo, month, notes, status, paymentMode } = req.body;
+    const fee = await Fee.findByIdAndUpdate(
+      feeId,
+      {
+        feeAmount,
+        paidAmount,
+        feeDepositDate,
+        validTo,
+        month,
+        notes,
+        status,
+        paymentMode
+      },
+      { new: true, runValidators: true }
+    );
+
+    if (!fee) return res.status(404).send('Fee not found');
+    req.flash("success",`The fee details  has been updated.`);
+    res.redirect(`/admin/students/${studentId}/fee`);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Server Error');
+  }
+});
+
+
+
+// ✅ Delete a fee
+router.delete("/students/:studentId/fee/:feeId",ensureAdmin, async (req, res) => {
+  try {
+    const { studentId, feeId } = req.params;
+
+    // Delete only if fee belongs to that student
+    const fee = await Fee.findOneAndDelete({ _id: feeId, student: studentId });
+
+
+    if (!fee) {
+      return res.status(404).json({ message: "Fee not found for this student" });
+    }
+    console.log(fee);
+    req.flash("success", "Fee record deleted successfully.");
+    res.redirect(`/admin/students/${studentId}/fee`); // ✅ dynamic redirect
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 });
 

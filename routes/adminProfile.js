@@ -3,7 +3,8 @@ const router = express.Router();
 const Student = require("../models/student.js");
 const Admin = require("../models/admin.js");
 const passport = require("passport");
-const Query = require("../models/query.js");
+const Query = require("../models/query.js"); 
+const Fee = require("../models/fee.js");
 const multer = require("multer");
 const { storage } = require("../CloudConfig.js");
 const uploads = multer({ storage });
@@ -69,15 +70,73 @@ router.post(
 // Admin
 router.get("/dashboard", ensureAdmin, async (req, res) => {
   try {
+    // Admin details
     const admin = await Admin.findOne({});
+
+    // Counts
     const totalStudents = await Student.countDocuments({});
     const totalQuery = await Query.countDocuments({});
+
+    // ✅ Total Fee Summary (All Time)
+    const feeSummary = await Fee.aggregate([
+      {
+        $group: {
+          _id: null,
+          totalFee: { $sum: "$feeAmount" },
+          totalPaid: { $sum: "$paidAmount" }
+        }
+      }
+    ]);
+
+    const totalFee = feeSummary[0]?.totalFee || 0;
+    const totalPaid = feeSummary[0]?.totalPaid || 0;
+    const totalPending = totalFee - totalPaid;
+
+    // ✅ Current Month's Total Paid
+    const startOfMonth = new Date();
+    startOfMonth.setDate(1);
+    startOfMonth.setHours(0, 0, 0, 0);
+
+    const endOfMonth = new Date(startOfMonth);
+    endOfMonth.setMonth(endOfMonth.getMonth() + 1);
+    endOfMonth.setMilliseconds(-1);
+
+    const monthlySummary = await Fee.aggregate([
+      {
+        $match: {
+          feeDepositDate: { $gte: startOfMonth, $lte: endOfMonth }
+        }
+      },
+      {
+        $group: {
+          _id: null,
+          totalPaid: { $sum: "$paidAmount" }
+        }
+      }
+    ]);
+
+    const totalPaidThisMonth =
+      monthlySummary.length > 0 ? monthlySummary[0].totalPaid : 0;
+
+    // ✅ Render dashboard
     req.flash("success", "Welcome to admin panel");
-    res.render("admin/dashboard.ejs", { admin, totalStudents, totalQuery,admin: req.user});
+    res.render("admin/dashboard.ejs", {
+      admin,
+      totalStudents,
+      totalQuery,
+      totalFee,
+      totalPaid,
+      totalPending,
+      totalPaidThisMonth,   // <-- important
+      user: req.user        // better than admin: req.user
+    });
+
   } catch (err) {
-    res.send("err", err);
+    console.error("Dashboard Error:", err);
+    res.status(500).send("Server Error");
   }
 });
+
 
 // Admin edit form
 router.get("/:id/edit", ensureAdmin, async (req, res) => {

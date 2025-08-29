@@ -16,6 +16,8 @@ const ejs = require("ejs");
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const passport = require("passport");
+const Fee = require("./models/fee.js");
+const Student = require("./models/student.js");
 
 
 
@@ -125,6 +127,14 @@ app.use("/",indexRoute);
 app.use("/admin",studentRoutes)
 app.use("/admin",adminprofileRoute);
 app.use("/student",studentLoginRoute);
+
+
+
+
+
+
+
+
 
 
 

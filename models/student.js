@@ -20,9 +20,6 @@ const studentSchema = new mongoose.Schema(
     },
     address: { type: String },
       role: { type: String, default: "student" },
-    feeAmount: { type: Number, required: true },
-    feeDepositDate: { type: Date, required: true },
-    validTo: { type: Date, required: true },
 
     seatNumber: { type: Number, required: true, index: true },
      email : {type : String , required: true, unique:true},
@@ -31,7 +28,12 @@ const studentSchema = new mongoose.Schema(
       url: String,
       filename: String,
     },
-
+     fee: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Fee"
+    }
+  ],
     timeSlot: {
       type: String,
       enum: ["6 hours", "12 hours", "18 hours", "24 hours"],

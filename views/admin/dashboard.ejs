@@ -115,13 +115,23 @@
           <a href="/admin/query" class="btn btn-light btn-sm">Query</a>
         </div>
       </div>
-      <div class="col-md-4">
+      <!-- <div class="col-md-4">
         <div class="stat-card bg-danger">
-          <h4>Pending Dues</h4>
-          <p>₹</p>
+          <h4>Total Fee </h4>
+          <p><%= totalPaid %></p>
+          <a href="#" class="btn btn-light btn-sm">Check Dues</a>
+        </div>
+      </div> -->
+
+       <div class="col-md-4">
+        <div class="stat-card bg-danger">
+          <h4>Total pay of current month</h4>
+           <p><%= totalPaidThisMonth %></p>
           <a href="#" class="btn btn-light btn-sm">Check Dues</a>
         </div>
       </div>
+
+      
     </div>
   </div>
 </div>

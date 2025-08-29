@@ -164,10 +164,11 @@
                   <h5 class="card-title fw-bold"><%= student.name %></h5>
                   <p class="card-text mb-1"><strong>SR No:</strong> <%= student.srNo %></p>
                   <p class="card-text mb-1"><strong>Phone:</strong> <%= student.phone || 'N/A' %></p>
-                  <p class="card-text mb-0"><strong>Address:</strong> <%= student.address %></p>
+                  <p class="card-text mb-0"><strong>Email:</strong> <%= student.email %></p>
                 </div>
 
                 <div class="card-footer text-center">
+                  <a href="/admin/students/<%= student._id %>/fee/add-fee" class="btn btn-success btn-sm me-2">Add Fee</a>
                   <a href="/admin/students/<%= student._id %>" class="btn btn-sm btn-outline-primary me-2">View</a>
                   <a href="/admin/students/<%= student._id %>/edit" class="btn btn-sm btn-outline-success">Edit</a>
                   <button class="btn btn-danger btn-sm" onclick="confirmDelete('<%= student._id %>')">Delete</button>

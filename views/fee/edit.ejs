@@ -1,0 +1,61 @@
+<% layout('layout/boilerplate') %>
+<%- include('../includes/sidebar') %>
+
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-9 col-lg-10 ms-sm-auto px-4 py-4">
+      <h2 class="h4 mb-4 fw-bold">Edit Fee for <%= student.name %></h2>
+
+      <div class="card shadow-sm border-0">
+        <div class="card-body">
+          <form action="/admin/students/<%= student._id %>/fee/<%= fee._id %>?_method=PUT" method="POST">
+            <div class="row g-3">
+
+              <div class="col-12 col-md-6">
+                <label class="form-label fw-semibold">Fee Amount</label>
+                <input type="number" name="feeAmount" class="form-control" value="<%= fee.feeAmount %>" required>
+              </div>
+
+              <div class="col-12 col-md-6">
+                <label class="form-label fw-semibold">Paid Amount</label>
+                <input type="number" name="paidAmount" class="form-control" value="<%= fee.paidAmount %>">
+              </div>
+
+              <div class="col-12 col-md-6">
+                <label class="form-label fw-semibold">Fee Deposit Date</label>
+                <input type="date" name="feeDepositDate" class="form-control" value="<%= fee.feeDepositDate ? fee.feeDepositDate.toISOString().split('T')[0] : '' %>">
+              </div>
+
+              <div class="col-12 col-md-6">
+                <label class="form-label fw-semibold">Valid To</label>
+                <input type="date" name="validTo" class="form-control" value="<%= fee.validTo.toISOString().split('T')[0] %>" required>
+              </div>
+
+              <div class="col-12 col-md-6">
+                <label class="form-label fw-semibold">Month</label>
+                <select name="month" class="form-select">
+                  <option value="" disabled>Select month</option>
+                  <% ["January","February","March","April","May","June","July","August","September","October","November","December"].forEach(m => { %>
+                    <option value="<%= m %>" <%= fee.month === m ? "selected" : "" %>><%= m %></option>
+                  <% }) %>
+                </select>
+              </div>
+
+              <div class="col-12 col-md-6">
+                <label class="form-label fw-semibold">Notes</label>
+                <textarea name="notes" class="form-control" rows="2"><%= fee.notes %></textarea>
+              </div>
+
+            </div>
+
+            <div class="mt-4 d-flex gap-2">
+              <button type="submit" class="btn btn-success px-4">Update Fee</button>
+              <a href="/admin/students/<%= student._id %>/fee" class="btn btn-secondary px-4">Back</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

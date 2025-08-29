@@ -1,0 +1,72 @@
+<% layout('layout/boilerplate') %>
+<%- include('../includes/sidebar') %>
+
+<div class="container-fluid">
+  <div class="row">
+    <!-- ✅ Main Content -->
+    <div class="col-md-9 col-lg-10 ms-sm-auto px-4 py-4">
+      <h2 class="h4 mb-4 fw-bold">Add Fee for <%= student.name %></h2>
+
+    <div class="card shadow-sm border-0">
+      <div class="card-body">
+        <form action="/admin/students/<%= student._id %>/fee" method="POST">
+          <div class="row g-3">
+
+            <div class="col-12 col-md-6">
+              <label class="form-label fw-semibold">Fee Amount</label>
+              <input type="number" name="feeAmount" class="form-control" placeholder="Enter fee amount" required>
+            </div>
+
+            <div class="col-12 col-md-6">
+              <label class="form-label fw-semibold">Paid Amount</label>
+              <input type="number" name="paidAmount" class="form-control" placeholder="Enter paid amount">
+            </div>
+
+            <div class="col-12 col-md-6">
+              <label class="form-label fw-semibold">Fee Deposit Date</label>
+              <input type="date" name="feeDepositDate" class="form-control">
+            </div>
+
+            <div class="col-12 col-md-6">
+              <label class="form-label fw-semibold">Valid To</label>
+              <input type="date" name="validTo" class="form-control" required>
+            </div>
+
+            <div class="col-12 col-md-6">
+              <label class="form-label fw-semibold">Month</label>
+              <select name="month" class="form-select">
+                <option value="month" disabled selected>Select month</option>
+                <option>January</option>
+                <option>February</option>
+                <option>March</option>
+                <option>April</option>
+                <option>May</option>
+                <option>June</option>
+                <option>July</option>
+                <option>August</option>
+                <option>September</option>
+                <option>October</option>
+                <option>November</option>
+                <option>December</option>
+              </select>
+            </div>
+
+            <div class="col-12 col-md-6">
+              <label class="form-label fw-semibold">Notes</label>
+              <textarea name="notes" class="form-control" rows="2" placeholder="Optional notes"></textarea>
+            </div>
+
+          </div>
+
+          <div class="mt-4 d-flex flex-wrap gap-2">
+            <button type="submit" class="btn btn-success px-4">Add Fee</button>
+            <a href="/admin/students/<%= student._id %>/fee" class="btn btn-secondary px-4">Back</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
