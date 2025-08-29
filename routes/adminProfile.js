@@ -46,26 +46,7 @@ router.post(
   }
 );
 
-// // GET: Register page (optional)
-// router.get("/register", (req, res) => {
-//   res.render("admin/register");
-// });
 
-// // POST: Register (Admin.register comes from PLM)
-// router.post("/register",validateAdminRegister, async (req, res) => {
-//   try {
-//     const { email, name, password } = req.body;
-//     const admin = new Admin({ email, name, role: "admin" });
-//     await Admin.register(admin, password);
-//     console.log(admin);
-//     req.flash("success", "Admin account created. Please login.");
-//     res.redirect("/admin/login");
-//   } catch (err) {
-//     console.error(err);
-//     req.flash("error", err.message || "Registration failed");
-//     res.redirect("/register");
-//   }
-// });
 
 // Admin
 router.get("/dashboard", ensureAdmin, async (req, res) => {
