@@ -520,7 +520,6 @@ router.delete("/students/:studentId/fee/:feeId",ensureAdmin, async (req, res) =>
     if (!fee) {
       return res.status(404).json({ message: "Fee not found for this student" });
     }
-    console.log(fee);
     req.flash("success", "Fee record deleted successfully.");
     res.redirect(`/admin/students/${studentId}/fee`); // ✅ dynamic redirect
   } catch (error) {
