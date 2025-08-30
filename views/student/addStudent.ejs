@@ -124,9 +124,8 @@
 
             <!-- Seat Number  -->
             <div class="col-md-6">
-              <label for="seatNumber" class="form-label">Seat Number:<span class="text-danger">*</span></label>
+              <label for="seatNumber" class="form-label">Seat Number:</label>
               <input type="number" class="form-control" id="seatNumber" name="seatNumber" required>
-               <span id="seat-feedback" class="text-danger"></span>
               <div class="invalid-feedback">Please enter a alloted seat number .</div>
             </div>
 
@@ -216,13 +215,11 @@ document.getElementById('email').addEventListener('input', e => {
   checkDuplicate('email', e.target.value, 'email-feedback');
 });
 
-document.getElementById('seatNumber').addEventListener('input', e => {
-  checkDuplicate('seatNumber', e.target.value, 'seat-feedback');
-});
+
 
 // Prevent form submit if any duplicate exists
 document.getElementById('addStudentForm').addEventListener('submit', e => {
-  const feedbacks = ['phone-feedback', 'srNo-feedback', 'seat-feedback','email-feedback'];
+  const feedbacks = ['phone-feedback', 'srNo-feedback', 'email-feedback'];
   for (const id of feedbacks) {
     if (document.getElementById(id).textContent !== '') {
       e.preventDefault();

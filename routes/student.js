@@ -14,12 +14,11 @@ const sendMail = require("../utils/sendMail.js");
 // CHECK DUPLICATE ROUTE 
 router.get("/students/check-duplicate", ensureAdmin, async (req, res) => {
   try {
-    const { phone, srNo, seatNumber,email } = req.query;
+    const { phone, srNo, email } = req.query;
     const query = [];
 
     if (phone) query.push({ phone });
     if (srNo) query.push({ srNo });
-    if (seatNumber) query.push({ seatNumber });
      if (email) query.push({ email });
 
     if (query.length === 0) return res.json({ exists: false });
@@ -33,7 +32,6 @@ router.get("/students/check-duplicate", ensureAdmin, async (req, res) => {
           name: existingStudent.name,
           phone: existingStudent.phone,
           srNo: existingStudent.srNo,
-          seatNumber: existingStudent.seatNumber,
           email: existingStudent.email
         }
       });
@@ -157,7 +155,7 @@ router.post("/newstudent",ensureAdmin,uploads.single("image"), async (req, res) 
       // 📩 Send confirmation email
     // ======================
     const htmlContent = `
-      <h2>Welcome to Shyam Library 🎓</h2>
+      <h2>Welcome to Shyam Library </h2>
       <p>Dear <b>${newStudent.name}</b>,</p>
       <p>Your  has been <b>successfully registered</b>.</p>
       <h3>Admission Details:</h3>
@@ -172,7 +170,7 @@ router.post("/newstudent",ensureAdmin,uploads.single("image"), async (req, res) 
         <li><b>Admission Date:</b> ${formatDate(newStudent.admissionDate)}</li>
         <li><b>Time Slot:</b> ${newStudent.timeSlot}</li>
       </ul>
-      <p>Keep this email as a reference. Wishing you a great journey ahead! 🚀</p>
+      <p>Keep this email as a reference. Wishing you a great journey ahead! </p>
     <p>Best Regards,<br/>Shyam Library </p>`;
 
        const mailSent = await sendMail(

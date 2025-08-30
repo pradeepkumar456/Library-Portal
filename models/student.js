@@ -21,7 +21,7 @@ const studentSchema = new mongoose.Schema(
     address: { type: String },
       role: { type: String, default: "student" },
 
-    seatNumber: { type: Number, required: true, index: true },
+    seatNumber: { type: Number, required: true },
      email : {type : String , required: true, unique:true},
 
     image: {

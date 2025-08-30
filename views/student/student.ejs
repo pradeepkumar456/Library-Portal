@@ -120,7 +120,7 @@
 
 
     <div class="container-fluid">
-      <h1 class="text-center mb-4" style="background-color:bisque">All Students</h1>
+      <h4 class="text-center mb-4" style="background-color:bisque">All Students</h4>
 
       <!-- 🔍 Search Filter -->
       <div class="search-container">
@@ -150,7 +150,7 @@
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
           <% allStudent.forEach(student=> { %>
             <div class="col">
-              <div class="card student-card h-100 shadow-sm">
+              <div class="card student-card h-100 shadow-sm" style="border: 1px solid black;">
                 <% if(student.image && student.image.url) { %>
                   <img src="<%= student.image.url %>" class="card-img-top student-img rounded-circle mt-2"
                     alt="<%= student.name %>" />
