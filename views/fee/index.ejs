@@ -42,10 +42,10 @@
                               <%= fee.paidAmount %>
                             </td>
                             <td>
-                              <%= fee.feeDepositDate ? fee.feeDepositDate.toDateString() : '-' %>
+                               <%= fee.feeDepositDate.toLocaleDateString("en-GB", { day: "2-digit", month: "2-digit", year: "numeric" }) %>
                             </td>
                             <td>
-                              <%= fee.validTo.toDateString() %>
+                             <%= fee.validTo.toLocaleDateString("en-GB", { day: "2-digit", month: "2-digit", year: "numeric" }) %>
                             </td>
                             <td>
                               <%= fee.notes || '-' %>

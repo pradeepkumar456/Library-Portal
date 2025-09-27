@@ -18,6 +18,7 @@ const ejsMate = require("ejs-mate");
 const passport = require("passport");
 const Fee = require("./models/fee.js");
 const Student = require("./models/student.js");
+const Admin = require("./models/admin.js");
 
 
 
@@ -31,7 +32,7 @@ const studentLoginRoute = require("./routes/studentLogin.js");
 
 
 
-const mongoUrl = process.env.MONGOURL;
+const mongoUrl = process.env.MONGO_URL;
 main()
   .then(() => {
     console.log("Connected to db ");
@@ -132,10 +133,38 @@ app.use("/student",studentLoginRoute);
 
 
 
+// app.get("/register",(req,res)=>{
+//   res.render("admin/register.ejs")
+// })
 
+// app.post("/admin/register", async (req, res) => {
+//   try {
+//     const { name, email, password, location } = req.body;
 
+//     if (!name || !email || !password) {
+//       req.flash("error", "All fields are required");
+//       return res.redirect("/admin/register");
+//     }
 
+//     // Create new admin object
+//     const newAdmin = new Admin({
+//       name,
+//       email,
+//       location,
+//       role: "admin",
+//     });
 
+//     // Register with PLM (handles password hashing)
+//     await Admin.register(newAdmin, password);
+
+//     req.flash("success", "Admin account created successfully. Please login.");
+//     res.redirect("/admin/login");
+//   } catch (err) {
+//     console.error("Admin registration error:", err);
+//     req.flash("error", err.message);
+//     res.redirect("/admin/register");
+//   }
+// });
 
 
 

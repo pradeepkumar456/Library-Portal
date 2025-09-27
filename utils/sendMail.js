@@ -31,8 +31,8 @@ const nodemailer = require("nodemailer");
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: process.env.EMAIL_USER, // Gmail address
-    pass: process.env.EMAIL_PASS, // App password
+    user: process.env.ADMIN_MAIL, // Gmail address
+    pass: process.env.ADMIN_PASS, // App password
   },
 });
 
@@ -50,7 +50,7 @@ const sendMail = async (to, subject, htmlContent) => {
     }
 
     await transporter.sendMail({
-      from: `"Ravendra Gangwar" <${process.env.EMAIL_USER}>`,
+      from: `"Ravendra Gangwar" <${process.env.ADMIN_MAIL}>`,
       to,
       subject,
       html: htmlContent,
