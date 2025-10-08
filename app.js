@@ -38,7 +38,7 @@ main()
     console.log("Connected to db ");
   })
      .catch((err) => {
-    console.log("Err in connecting", err);
+    console.log("Err in  connecting to db ", err);
   });
 
 async function main() {
