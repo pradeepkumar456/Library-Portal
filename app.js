@@ -32,7 +32,7 @@ const studentLoginRoute = require("./routes/studentLogin.js");
 
 
 
-const mongoUrl = process.env.MONGO_URL;
+const mongoUrl = process.env.DB_URL;
 main()
   .then(() => {
     console.log("Connected to db ");
@@ -128,6 +128,8 @@ app.use("/",indexRoute);
 app.use("/admin",studentRoutes)
 app.use("/admin",adminprofileRoute);
 app.use("/student",studentLoginRoute);
+
+
 
 
 
