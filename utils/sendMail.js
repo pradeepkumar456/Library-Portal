@@ -1,42 +1,57 @@
+const axios = require("axios");
+require("dotenv").config();
 
-const nodemailer = require("nodemailer");
-
-// Reusable transporter (create once)
-const transporter = nodemailer.createTransport({
- host: "smtp.gmail.com",
-  port : 465,
-  secure: true, // true for 465, false for other ports
-  auth: {
-    user: process.env.ADMIN_MAIL, // Gmail address
-    pass: process.env.ADMIN_PASS, // App password
-  },
-});
-
-const sendMail = async (to, subject, htmlContent) => {
+const sendMail = async (to, subject, htmlContent, toName) => {
   try {
+    // Check if email is provided
     if (!to) {
       console.log("⚠️ No email provided, skipping mail...");
-      return false; // mail नहीं गया
+      return false;
     }
 
+    // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(to)) {
       console.log("⚠️ Invalid email format, skipping mail...");
       return false;
     }
 
-    await transporter.sendMail({
-      from: `"Ravendra Gangwar" <${process.env.ADMIN_MAIL}>`,
-      to,
-      subject,
-      html: htmlContent,
-    });
+    
 
-   
-    return true; // mail successfully गया
+    // Send email using Brevo API
+    const response = await axios.post(
+      "https://api.brevo.com/v3/smtp/email",
+      {
+        sender: {
+          name: process.env.FROM_NAME || "Pradeep Kumar",
+          email: process.env.FROM_EMAIL, // verified sender
+        },
+        to: [
+          {
+            email: to,  
+          }
+        ],
+        subject,
+        htmlContent,
+      },
+      {
+        headers: {
+          accept: "application/json",
+          "api-key": process.env.BREVO_API_KEY,
+          "content-type": "application/json",
+        },
+      }
+    );
+
+    // console.log("✅ Email sent:", response.data.messageId);
+    return true;
+
   } catch (err) {
-    console.error("⚠️ Mail sending failed:", err.message);
-    return false; // mail fail हो गया
+    console.error(
+      "❌ Mail sending failed:",
+      err.response?.data || err.message
+    );
+    return false;
   }
 };
 
