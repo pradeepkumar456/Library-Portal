@@ -23,7 +23,7 @@ const sendMail = async (to, subject, htmlContent, toName) => {
       "https://api.brevo.com/v3/smtp/email",
       {
         sender: {
-          name: process.env.FROM_NAME || "Pradeep Kumar",
+          name: process.env.FROM_NAME || "Ravendra Kumar",
           email: process.env.FROM_EMAIL, // verified sender
         },
         to: [

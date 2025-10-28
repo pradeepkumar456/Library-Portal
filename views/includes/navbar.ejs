@@ -6,6 +6,13 @@
 
 .nav-link{
   font-size: 1.2rem;
+  transition: color 0.3s ease, font-weight 0.3s ease;
+}
+
+/* Add hover style separately */
+.nav-link:hover {
+  color: #007bff !important; /* Bootstrap primary color */
+  font-weight: bold;
 }
 </style>
 
@@ -25,22 +32,22 @@
     <div class="collapse navbar-collapse" id="mainNavbar">
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" href="/">Home</a>
+          <a class="nav-link active bold " href="/">Home</a>
         </li>
         <!-- <li class="nav-item">
           <a class="nav-link" href="/students/addstudent">Add new Student</a>
         </li> -->
         <li class="nav-item">
-          <a class="nav-link active" href="/about">About</a>
+          <a class="nav-link active bold" href="/about">About</a>
         </li>
           <!-- <li class="nav-item">
           <a class="nav-link active" href="/service">My Service</a>
         </li> -->
         <li class="nav-item">
-          <a class="nav-link active" href="/contact">Contact</a>
+          <a class="nav-link active bold" href="/contact">Contact</a>
         </li>
          <li class="nav-item">
-          <a class="nav-link" href="/admin/dashboard">Admin</a>
+          <a class="nav-link bold" href="/admin/dashboard">Admin</a>
         </li>
         <!-- Dropdown -->
         <!-- <li class="nav-item dropdown">
